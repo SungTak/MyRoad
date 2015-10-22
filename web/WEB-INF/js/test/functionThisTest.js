@@ -9,4 +9,6 @@ test("functionThis.js", function() {
     equal(cobra.skulk(), cobra);
 
     equal(lizard.skulk(), lizard);
+
+    equal(dragon(), window, "new로 생성했지만 this는 window를 가리킨다!");
 });
