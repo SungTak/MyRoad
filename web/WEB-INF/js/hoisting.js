@@ -27,3 +27,4 @@ function raceWalk() {
 
 //console.log(c); // 못찾는다고하는데?응?
 console.log(raceWalk());
+console.log(c);
