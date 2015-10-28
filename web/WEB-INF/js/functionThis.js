@@ -14,3 +14,5 @@ var cobra = {
 var lizard = {
     skulk : creep
 };
+
+var dragon = new Function("return this");
