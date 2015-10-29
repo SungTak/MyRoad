@@ -1,19 +1,24 @@
-/**
- * Created by Naver on 2015-10-28.
- */
 test("Object.js", function() {
     equal("Blue Color", window.sea);
     equal("Blue Color", window.river());
 });
 
 
-test("Object.js", function() {
-    equal("white", sprite.color);
-    equal(undefined, coke.color);
+test("Custom Object.js", function() {
+    equal("white", sprite.getColor());
+    //equal(undefined, coke.getColor());
     equal("black", window.color);
 });
 
-test("Object.js", function() {
+test("literal Object.js", function() {
     equal("white", soda.getColor());
     equal("white", juice.getColor);
 });
+
+test("new Object.js", function() {
+    equal("greenyellow", sportsDrink.getColor());
+    equal("greenyellow", sportsDrink.color);
+    equal("greenyellow", sportsDrink['color']);
+    equal(undefined, sportsDrink['Color']);
+});
+
