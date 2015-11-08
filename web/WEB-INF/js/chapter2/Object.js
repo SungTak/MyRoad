@@ -43,10 +43,27 @@ var juice = {
     color : "orange"
 };
 
-juice.getColor = soda.getColor();
+// 이 코드는 잘못됨
+juice.getColor = soda.getColor(); // 함수가 아니라 this.color로 white라는 데이터를 주고 있음,
 
 console.log("soda color", soda.getColor());
 console.log("juice color", juice.getColor);
+
+var appleJuice = {
+    color : "yellow"
+};
+
+appleJuice.getColor = soda.getColor;
+
+console.log("soda color", soda.getColor());
+console.log("apple juice color", appleJuice.getColor());
+
+function grapeJuice() {
+    var color = "purple";
+    return soda.getColor();
+}
+
+console.log("grape juice color", grapeJuice());
 
 /**
  * 기본 Object를 통한 객체 생성

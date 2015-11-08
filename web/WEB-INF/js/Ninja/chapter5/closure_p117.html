@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+    var outerValue = 'ninja';
+    var later;
+
+    function outerFunction() {
+        var innerValue = 'samurai';
+
+        function innerFunction() {
+            console.log(outerValue, "I can see the ninja.");
+            console.log(innerValue, "I can see the samurai.");
+        }
+
+        later = innerFunction;
+    }
+
+    outerFunction();
+
+    later();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+    var outerValue = 'ninja';
+    var later;
+
+    function outerFunction() {
+        var innerValue = 'samurai';
+
+        function innerFunction(paramValue) {
+            console.log(outerValue, "I can see the ninja.");
+            console.log(innerValue, "I can see the samurai.");
+            console.log(paramValue, "I can see the param.");
+            console.log(tooLate, "I can see the tooLate.");
+        }
+
+        later = innerFunction;
+    }
+
+    var tooLate = 'ronin';
+
+    outerFunction();
+
+    later('go');
+</script>
+</body>
+</html>

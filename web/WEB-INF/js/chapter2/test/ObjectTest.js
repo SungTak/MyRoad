@@ -13,6 +13,8 @@ test("Custom Object.js", function() {
 test("literal Object.js", function() {
     equal("white", soda.getColor());
     equal("white", juice.getColor);
+    equal("white", grapeJuice());
+    equal("yellow", appleJuice.getColor());
 });
 
 test("new Object.js", function() {
