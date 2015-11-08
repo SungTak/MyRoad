@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<button id="test">Go!</button>
+
+<script type="text/javascript">
+   var button = {
+       clicked : false,
+       click : function () {
+           this.clicked = true;
+           alert("클릭됨" + this.clicked + "하지만" + button.clicked);
+       }
+   };
+
+    var elem = document.getElementById("test");
+
+   // button.click의 this는 elem이된다.
+   elem.addEventListener("click", button.click, false);
+
+</script>
+</body>
+</html>

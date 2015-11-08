@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<button id="test">Go!</button>
+
+<script type="text/javascript">
+    var button = {
+        clicked : false,
+        click : function () {
+            this.clicked = true;
+            alert("클릭됨" + this.clicked + "이번엔" + button.clicked);
+        }
+    };
+
+    function bind(context, name) {
+        return function() {
+            return context[name].apply(context, arguments);
+        }
+    }
+
+    var elem = document.getElementById("test");
+
+    // button.click의 this는 elem이되었지만..
+    //elem.addEventListener("click", bind(button, "click"), false);
+// http://www.nextree.co.kr/
+
+    elem.addEventListener("click", button.click.apply(button), false);
+
+</script>
+</body>
+</html>
