@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var obj = {
+        foo : 'a'
+    };
+
+    Object.preventExtensions(obj);
+
+    obj.bar = 'b';
+
+    console.log(obj.bar);
+    console.log(obj.foo);
+    console.log(Object.isExtensible(obj));
+
+    delete obj.foo;
+    console.log(obj.foo);
+
+    var winter = {
+        month : [12],
+        isHot : false
+    };
+
+    // 추가 크롬, fox은 오브젝트가 다 변경된 후에 보여줌.. IE는 다름
+    console.log(winter.month);
+
+    winter.month.push(1);
+
+    console.log(winter.month);
+
+    Object.freeze(winter);
+    winter.month.push(2); // 배열을 못 바꾸지 배열내 값은 참조라 결정못하는듯.
+    winter.isCold = true;
+    winter.isHot = true;
+    winter.month = 12;
+
+    // 즉 함정임, 보호는 얕은 수준임..
+    console.log(winter.month);
+    console.log(winter.isCold);
+    console.log(winter.isHot);
+    console.log(Object.isFrozen(winter));
+
+</script>
+</body>
+</html>
