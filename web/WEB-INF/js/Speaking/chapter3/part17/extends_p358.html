@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function Anti(data) {
+        if (data) {
+            this.data = data;
+        }
+    }
+
+    Anti.prototype.data = []; // prototype에 초기화
+
+    var sample01 = new Anti();
+    var sample02 = new Anti();
+    var sample03 = new Anti('g.g');
+
+    sample01.data.push(1);
+
+    console.log(sample01.data); // 배열의 메서드를 호출하기 때문에0 참조되어 프로토타입에 적용됨
+    console.log(sample02.data);
+    console.log(sample03.data);
+
+    sample01.data = [10,20,30];
+
+    console.log(sample01.data);
+    console.log(sample02.data);
+    console.log(sample03.data);
+</script>
+</body>
+</html>
