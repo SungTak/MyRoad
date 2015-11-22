@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function Car(code, company) {
+        this.code = code;
+        this.company = company;
+    }
+
+    Car.prototype.getCode = function() {
+        return this.code;
+    };
+    Car.prototype.getCompany = function() {
+        return this.company;
+    };
+
+    function Sedan(code, company, people) {
+        Car.call(this, code, company); //부모 함수를 호출하고 디스를 바인딩
+        this.people = people;
+    }
+
+    Sedan.prototype = Object.create(Car.prototype);
+    Sedan.prototype.constructor = Sedan;
+    Sedan.prototype.getPeople = function() {
+        return this.people;
+    };
+
+    Sedan.prototype.getCode = function() {
+        return "override" + Car.prototype.getCode.call(this);
+    };
+
+    var sonata = new Sedan('LF', '현대', 4);
+    var bus = new Car('BUS', 'KIA');
+
+    console.log(sonata.getCode(), sonata.getCompany(), sonata.getPeople());
+    console.log(sonata instanceof Sedan);
+    console.log(sonata instanceof Car);
+    console.log(Car.prototype.isPrototypeOf(sonata));
+    console.log(Sedan.prototype.isPrototypeOf(sonata));
+
+    console.log(bus.getCode(), bus.getCompany());
+    console.log(bus instanceof Sedan);
+    console.log(bus instanceof Car);
+    console.log(Sedan.prototype.isPrototypeOf(bus));
+    console.log(Car.prototype.isPrototypeOf(bus));
+
+
+</script>
+</body>
+</html>

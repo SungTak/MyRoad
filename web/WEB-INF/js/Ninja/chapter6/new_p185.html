@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function User(first, last) {
+        if (!(this instanceof arguments.callee)) {
+            return new User(first, last);
+        }
+        this.name = first + last;
+    }
+
+    var name = "사냥꾼";
+    var ranger = User("레", "인저");
+    var guardian = new User("가", "디언");
+
+    console.log(name);
+    console.log(ranger.name);
+    console.log(guardian.name);
+</script>
+</body>
+</html>

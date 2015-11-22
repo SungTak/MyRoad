@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var obj = {};
+    var child = Object.create(obj);
+
+    var result = Object.getPrototypeOf(child) === obj;
+
+    console.log(result);
+
+    function Template() {
+
+    }
+
+    result = Object.getPrototypeOf(new Template()) === Template.prototype; // template의 __proto__
+
+    console.log(result);
+
+    result =  Object.getPrototypeOf(Template) === Function.prototype; // new 하지 않은 template의 __proto__
+
+    console.log(result); //
+</script>
+</body>
+</html>

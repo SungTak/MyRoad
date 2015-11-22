@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function Person() {
+
+    }
+
+    Person.prototype.dance = function() {
+        console.log("춤을 춥니다.");
+        console.dir(this);
+    };
+
+    function Ninja() {
+
+    }
+
+    Ninja.prototype = {
+        dance : Person.prototype.dance
+    };
+
+//    Ninja.prototype.dance = Person.prototype.dance; // 과연 이건 상속일까?
+
+    var ninja = new Ninja();
+    ninja.dance();
+
+    console.log(ninja instanceof Ninja);
+    console.log(ninja instanceof Person);
+    console.log(ninja instanceof Object);
+</script>
+</body>
+</html>

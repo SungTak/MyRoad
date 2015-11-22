@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     * source의 프로퍼티를 target에 넣는다.
+     *
+     * @param target 복사 대상
+     * @param source 복사 소스
+     * @returns {*}
+     */
+    function copyOwnPropertiesFrom(target, source) {
+        Object.getOwnPropertyNames(source).forEach(
+                function(propKey) {
+                    var descriptor = Object.getOwnPropertyDescriptor(source, propKey);
+                    Object.defineProperty(target, propKey, descriptor);
+                }
+        );
+
+        return target;
+    }
+
+    /**
+     * 자식클래스를 만드는 함수
+     *
+     * @param SubClass 하위클래스
+     * @param SuperClass 부모
+     */
+    function subclasses(SubClass, SuperClass) {
+        var subProto = Object.create(SuperClass.prototype);
+        copyOwnPropertiesFrom(subProto, SubClass.prototype); // 이게 없으면 부모 프로토타입만 배치됨, 안됨 자기꺼도 해야됨
+
+        SubClass.prototype = subProto;
+        SubClass._super = SuperClass.prototype;
+    }
+
+    function Car(code, company) {
+        this.code = code;
+        this.company = company;
+    }
+
+    Car.prototype.getCode = function() {
+        return this.code;
+    };
+    Car.prototype.getCompany = function() {
+        return this.company;
+    };
+
+    function Sedan(code, company, people) {
+        Sedan._super.constructor.call(this, code, company); //부모 함수를 호출하고 디스를 바인딩
+        this.people = people;
+    }
+
+    Sedan.prototype.getPeople = function() {
+        return this.people;
+    };
+
+    Sedan.prototype.getCode = function() {
+        return "override" + Sedan._super.getCode.call(this);
+    };
+
+    subclasses(Sedan, Car);
+    var sonata = new Sedan('LF', '현대', 4);
+    var bus = new Car('BUS', 'KIA');
+
+    console.log(sonata.getCode(), sonata.getCompany(), sonata.getPeople());
+    console.log(sonata instanceof Sedan);
+    console.log(sonata instanceof Car);
+    console.log(Car.prototype.isPrototypeOf(sonata));
+    console.log(Sedan.prototype.isPrototypeOf(sonata));
+
+    console.log(bus.getCode(), bus.getCompany());
+    console.log(bus instanceof Sedan);
+    console.log(bus instanceof Car);
+    console.log(Sedan.prototype.isPrototypeOf(bus));
+    console.log(Car.prototype.isPrototypeOf(bus));
+
+
+</script>
+</body>
+</html>

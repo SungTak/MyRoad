@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function object(o) {
+        function F() {}
+        F.prototype = o;
+
+        return new F();
+    }
+
+    function inheritPrototype(subClass, superClass) {
+        var prototype = object(superClass.prototype);
+        prototype.constructor = subClass;
+
+        subClass.prototype = prototype;
+    }
+
+    function Person() {
+
+    }
+
+    Person.prototype.dance = function() {
+        console.log("춤을 춥니다.");
+        console.dir(this);
+    };
+
+    function Ninja() {
+        //Person.call(this); // 부모생성자에 this 값들이 있을때 호출하여 Ninja의 프로퍼티에 바인딩 Java의 super같은 개념
+    }
+
+    inheritPrototype(Ninja, Person);
+
+
+    var parent = new Person();
+    parent.age = 55;
+
+    var ninja = new Ninja();
+    ninja.dance();
+
+    console.log(ninja instanceof Ninja);
+    console.log(ninja instanceof Person);
+    console.log(ninja instanceof Object);
+
+    Ninja.prototype.attack = "공격";
+
+    var person = new Person();
+    console.log(person.attack, "person"); // 없다. 왜? new Person이라는 객체에 프로퍼티로 들어갔으니깐..
+    console.log(parent.attack, "parent"); // 없다. 중간에 F가 끼여있음
+    console.log(ninja.attack, "ninja");
+</script>
+</body>
+</html>

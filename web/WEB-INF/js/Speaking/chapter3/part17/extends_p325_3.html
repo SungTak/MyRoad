@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var proto = {
+        foo : 'a'
+    };
+
+    var obj = proto;
+
+    console.log("obj의 foo : " + obj.foo);
+    console.log("obj는 foo를 직접 가지는가?", obj.hasOwnProperty('foo'));
+
+    obj.foo = 'b';
+    obj.bar = 'new';
+
+    console.log("obj의 foo : " + obj.foo);
+    console.log("obj는 foo를 직접 가지는가?", obj.hasOwnProperty('foo'));
+
+
+    console.log("obj의 bar : " + obj.foo);
+    console.log("proto의 bar : ", proto.bar);
+    console.log("proto는 bar를 직접 가지는가?", proto.hasOwnProperty('bar'));
+</script>
+</body>
+</html>

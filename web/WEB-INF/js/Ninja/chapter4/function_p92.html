@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var store = {
+        nextId : 1,
+        cache : {},
+        add : function(fn) {
+            if (!fn.id) {
+                console.log("save success");
+                fn.id = store.nextId++; //store대신 this해도 되네 ㅎㅎ
+                return !!(store.cache[fn.id] = fn); // boolean으로 리턴하는 키워드(!!)
+            }
+            console.log("already exist function");
+            return false;
+        }
+    };
+
+    function ninja() {}
+
+    console.log(store.add(ninja));
+    console.log(store.add(ninja));
+</script>
+</body>
+</html>

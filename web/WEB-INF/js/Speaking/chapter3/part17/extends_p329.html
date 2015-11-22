@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var obj = Object.defineProperties({}, {
+        objEnumTrue : {
+            value : 1,
+            enumerable : true
+        },
+
+        objEnumFalse : {
+            value : 2,
+            enumerable : false
+        }
+    });
+
+    var child = Object.create(obj, {
+        childEnumTrue : {
+            value : 10,
+            enumerable : true
+        },
+
+        childEnumFalse : {
+            value : 20,
+            enumerable : false
+        }
+    });
+
+    function findProperties() {
+        for (var property in child) {
+            console.log("child의 프로퍼티", property);
+        }
+    }
+
+    findProperties();
+
+</script>
+</body>
+</html>
