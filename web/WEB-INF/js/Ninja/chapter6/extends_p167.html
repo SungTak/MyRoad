@@ -19,11 +19,11 @@
 
     }
 
-//    Ninja.prototype = {
-//        dance : Person.prototype.dance
-//    };
+    Ninja.prototype = {
+        dance : Person.prototype.dance
+    };
 
-    Ninja.prototype.dance = Person.prototype.dance; // 과연 이건 상속일까?
+//    Ninja.prototype.dance = Person.prototype.dance; // 과연 이건 상속일까?
 
     var ninja = new Ninja();
     ninja.dance();

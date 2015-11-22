@@ -10,13 +10,12 @@
         foo : 'a'
     };
 
-    var obj = Object.create(proto);
+    var obj = proto;
 
     console.log("obj의 foo : " + obj.foo);
     console.log("obj는 foo를 직접 가지는가?", obj.hasOwnProperty('foo'));
 
     obj.foo = 'b';
-    obj.bar = 'new';
 
     console.log("obj의 foo : " + obj.foo);
     console.log("obj는 foo를 직접 가지는가?", obj.hasOwnProperty('foo'));
