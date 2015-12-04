@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function requireVar() {
+        //'use strict';
+
+        //global = 'hohoho';
+    }
+
+    requireVar();
+
+    function strictObj(sample) {
+        //'use strict';
+
+        console.log('this is', this);
+
+        this.sample = sample;
+    }
+
+    var mistake = strictObj(777);
+
+    'use strict';
+    var windowScope = 'sss';
+
+   // delete  windowScope;
+    delete window.windowScope;
+
+    console.log(window.windowScope);
+
+    // 이밖에도 8진수 금지, with금지, string의 length조작 금지  등등이 있음, eval의 경우 로컬 스코프에 변수가 생기지 않음
+</script>
+</body>
+</html>

@@ -18,6 +18,9 @@
     console.log(obj.foo);
     console.log(Object.isExtensible(obj));
 
+    obj.foo = 'ccc';
+    console.log("ccc로 변경", obj.foo);
+
     delete obj.foo;
     console.log(obj.foo);
 
@@ -40,9 +43,9 @@
     winter.month = 12;
 
     // 즉 함정임, 보호는 얕은 수준임..
-    console.log(winter.month);
-    console.log(winter.isCold);
-    console.log(winter.isHot);
+    console.log("참조내값변경가능", winter.month);
+    console.log("추가불가", winter.isCold);
+    console.log("변경불가", winter.isHot);
     console.log(Object.isFrozen(winter));
 
 </script>

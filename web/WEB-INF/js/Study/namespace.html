@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var NTS = NTS || {};
+
+    NTS.Employee = function(name) {
+        this.name = name;
+    };
+    NTS.Employee.prototype.getName = function() {
+        return this.name;
+    };
+    NTS.companyName = 'NHN Technology Services';
+
+    var seongTak = new NTS.Employee('윤성탁');
+    console.log(seongTak.getName());
+</script>
+
+</body>
+</html>

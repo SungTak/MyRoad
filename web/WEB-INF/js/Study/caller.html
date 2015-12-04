@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+
+    function whoiscall() {
+        console.log(whoiscall.caller, ":", arguments.callee.caller, ":", arguments.callee, this);
+    }
+
+    function SeongNam() {
+        this.calling = function() {
+            //성남에서 호출
+            whoiscall();
+        }
+    }
+
+    var bundang = new SeongNam();
+
+    whoiscall.apply(bundang);
+    whoiscall();
+
+    var me = new whoiscall();
+
+    bundang.calling();
+
+    function Korea(city) {
+        this.city = city;
+
+        this.directCall = function() {
+            //이곳은 직접 바로 호출korea
+            whoiscall();
+        }
+    }
+
+    var korea = new Korea(bundang);
+
+    korea.city.calling();
+    korea.directCall();
+
+
+</script>
+</body>
+</html>

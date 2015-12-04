@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var setTimeCnt = 0;
+    var setIntervalCnt = 0;
+
+    // 시간 후 수행이라 지연이 발생
+    setTimeout(function repeat() {
+        setTimeCnt++;
+        console.log(new Date().getSeconds(), " TimeCnt : ", setTimeCnt);
+
+        for (var i = 0; i < 2515500000; i++) {
+
+        }
+
+        setTimeout(repeat, 1000);
+    }, 1000);
+
+    // 지연은 발생하지 않으나 이미 큐에 저장되어있으면 같은 인터벌은 저장되지 않음
+    setInterval(function() {
+        setIntervalCnt++;
+        console.log(new Date().getSeconds(), "Interval", setIntervalCnt);
+
+//        for (var i = 0; i < 1515500000; i++) {
+//
+//        }
+    }, 100);
+</script>
+</body>
+</html>

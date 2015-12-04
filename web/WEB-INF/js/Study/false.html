@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function showFalse(value) {
+        if (value) {
+            console.log(value, true);
+        } else {
+            console.log(value, false);
+        }
+    }
+
+    showFalse(0);
+    showFalse(1);
+    showFalse("");
+    showFalse("0");
+    showFalse("1");
+    showFalse(null);
+    showFalse(undefined);
+    showFalse({a:"foo"});
+    showFalse([]);
+    showFalse([1, 2, 3]);
+    showFalse(function () { });
+    showFalse("true");
+    showFalse("false");
+</script>
+
+</body>
+</html>
