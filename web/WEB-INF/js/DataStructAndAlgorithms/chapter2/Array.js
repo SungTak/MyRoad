@@ -46,6 +46,7 @@ console.log("concat1 : ", nums.concat(newElements));
 console.log("concat2 : ", newElements.concat(nums));
 
 var sliceArray = [1,2,3,4,5,6,7,8,9,10];
+console.log("slice : ", sliceArray.slice());
 console.log("slice : ", sliceArray.slice(3,5));
 console.log("slice after : ", sliceArray);
 

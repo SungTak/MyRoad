@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    Function.prototype.partial = function() {
+        var fn = this;
+        var args = Array.prototype.slice.call(arguments);
+
+        return function() {
+            var arg = 0;
+            for (var i = 0; i < args.length && arg < arguments.length; i++) {
+                if (args[i] === undefined) {
+                    args[i] = arguments[arg++];
+                }
+            }
+
+            return fn.apply(this, args);
+        }
+    };
+
+    var delay = setTimeout.partial(undefined, 2000); // args는 undefined와 2000이 세팅된 함수를 받는다.
+
+    delay(function() { // 이 시점에는 이 function이 undefined args를 대체한다.
+        console.log("2초뒤 호출");
+    });
+</script>
+</body>
+</html>
