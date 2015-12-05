@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    function getValueForEcma6(condition) {
+
+        var value = "apply redeclare";
+
+        if (condition) {
+        //var value = "not redeclare"; //invalid
+            let value = "blue";
+
+            // other code
+
+            return value;
+        } else {
+            // value exists here with a value of undefined
+            //console.log("value가 선언되지않는다, 블록범위", value);
+            return null;
+
+        }
+        // value exists here with a value of undefined
+        console.log("리턴때문에 호출되지 않지만. value는 존재한다", value);
+    }
+
+    console.log(getValueForEcma6('aaa'));
+    console.log(getValueForEcma6());
+
+</script>
+</body>
+</html>

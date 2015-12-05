@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    var message = 30;
+    let age = 25;
+
+    //const message = "gogo";
+    //const age = 35; //불가함
+
+    age = 100;
+    message = age;
+
+    console.log(message);
+    console.log(age);
+
+    const person = {
+        name : "oh"
+    };
+
+    person.name = "gogo" //valid
+
+//    person = {
+//        name : "ex"
+//    } //invalid
+
+    console.log(person.name);
+
+    let undefined = "aaa";
+    console.log(undefined);
+</script>
+</body>
+</html>
