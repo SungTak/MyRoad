@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!-- https://leanpub.com/understandinges6/read -->
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript"> // ECMA6에서는 <!-- -->주석이 안됨..!!
+
+var values = ['banana', 'apple', 'kiwi', 'strawberry', 'watermelon', 'melon', 'grape'];
+
+var normalized = values.map(function(text) {
+    console.log(text);
+    return text.normalize();
+});
+
+normalized.sort(function(first, second) {
+    console.log("first", first, "second", second);
+    if (first < second) {
+        return -1;
+    } else if (first === second) {
+        return 0;
+    } else {
+        return 1;
+    }
+});
+
+console.log(values);
+console.log(normalized);
+</script>
+</body>
+</html>

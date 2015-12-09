@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!-- https://leanpub.com/understandinges6/read -->
+
+<script type="text/javascript"> // ECMA6에서는 <!-- -->주석이 안됨..!!
+
+var values = ['banana', 'apple', 'kiwi', 'strawberry', 'watermelon', 'melon', 'grape'];
+
+var normalized = values.map(function(text) {
+    console.log(text);
+    return text; // normalize()가 미존재 뭔 차인지.. 잘모르겠음..;
+    // https://ko.wikipedia.org/wiki/%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C_%EC%A0%95%EA%B7%9C%ED%99%94
+});
+
+normalized.sort(function(first, second) {
+    console.log("first", first, "second", second);
+    if (first < second) {
+        return -1;
+    } else if (first === second) {
+        return 0;
+    } else {
+        return 1;
+    }
+});
+
+console.log(values);
+console.log(normalized);
+</script>
+</body>
+</html>
