@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+
+// http://www.es6fiddle.net/ 여기선 잘되네 ㅎㅎ;;
+
+    function Person(name) {
+        this.name = name;
+    }
+
+    var person = new Person("Nicholas");
+
+    console.log(person);        // "[Object object]"
+    console.log(person.name);    // Nicholas
+
+  //  var notAPerson = Person("NicholasNotNew"); // Error in Ecma6
+  //  console.log(notAPerson);    // "undefined"
+  //  console.log(notAPerson.name);    // show error in ecma5
+  //  console.log(window.name);    // NicholasNotNew
+
+    function iamFunction(name) {
+       // this.name = name; // this가 이제 선언되면 무조건 new가 있어야되나..??!
+    }
+
+    var ffff = iamFunction("function");
+
+    console.log(ffff);
+
+    console.log("=== ECMA5 ===");
+
+    // Defense Logic of ECMA5
+    function Person5(name) {
+        if (this instanceof Person5) {
+            this.name = name;   // using new
+        } else {
+            throw new Error("You must use new with Person5.");
+        }
+    }
+
+    var person5 = new Person5("Nicholas");
+    var notAPerson5 = Person5.call(person5, "Michael");    // works!
+
+    console.log(person5.name); // 니콜라스에서 바인딩때문에 마이첼로 변경됨
+    console.log(notAPerson5); //undefine 당연히 리턴이 없음
+
+
+    console.log("=== new.target ===");
+
+    function PersonTarget(name) {
+        if (typeof new.target === PersonTarget) { // 브라우저 미지원..
+            this.name = name;   // using new
+        } else {
+            //throw new Error("You must use new with PersonTarget.");
+        }
+    }
+
+    function AnotherPersonTarget(name) {
+        PersonTarget.call(this, name);
+    }
+
+    var personTarget = new PersonTarget("Nicholas");
+    var anotherPersonTarget = new AnotherPersonTarget("Nicholas");  // error!
+</script>
+</body>
+</html>

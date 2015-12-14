@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    function pick(object) {
+        let result = Object.create(null);
+
+        console.dir(result, "Object.create(null)");
+
+        // start at the second parameter
+        for (let i = 1, len = arguments.length; i < len; i++) {
+            result[arguments[i]] = object[arguments[i]];
+        }
+
+        return result;
+    }
+
+    let book = {
+        title: "Understanding ECMAScript 6",
+        author: "Nicholas C. Zakas",
+        year: 2015
+    };
+
+    let bookData = pick(book, "author", "year");
+
+    console.log(bookData.author);   // "Nicholas C. Zakas"
+    console.log(bookData.year);     // 2015
+    console.log(bookData.title);     // undefined
+
+    console.log("=== ECMA 6 ... ===");
+
+    function pickDotDotDot(object, ...keys) {
+        let result = Object.create(null);
+
+        for (let i = 0, len = keys.length; i < len; i++) {
+            result[keys[i]] = object[keys[i]];
+        }
+
+        return result;
+    }
+
+    let bookDots = pickDotDotDot(book, "author", "year");
+
+    console.log(bookDots.author);   // "Nicholas C. Zakas"
+    console.log(bookDots.year);     // 2015
+    console.log(bookDots.title);     // undefined
+
+    console.log("=== ... check arguments ===");
+
+    function checkArgs(...args) {
+        console.log(args.length);
+        console.log(arguments.length);
+        console.log(args[0], arguments[0]);
+        console.log(args[1], arguments[1]);
+    }
+
+    checkArgs("a", "b");
+</script>
+</body>
+</html>

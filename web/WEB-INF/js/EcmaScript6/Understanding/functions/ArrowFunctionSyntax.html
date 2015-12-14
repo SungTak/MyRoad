@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// http://www.es6fiddle.net/
+// https://leanpub.com/understandinges6/read#leanpub-auto-clarifying-the-dual-purpose-of-functions
+
+    var reflect = value => value;
+
+    // effectively equivalent to:
+    var reflectOrigin = function(value) {
+        return value;
+    };
+
+    console.log("lambda??",  reflect(5));
+    console.log("origin",  reflectOrigin(15));
+
+
+    console.log("==== add ====");
+
+    var sum = (num1, num2) => num1 + num2;
+
+    // effectively equivalent to:
+
+    var sumMutant = (num1, num2) => {
+        return num1 + num2;
+    };
+
+    var sumOrigin = function(num1, num2) {
+        return num1 + num2;
+    };
+
+    console.log("lambda add?", sum(1,3));
+    console.log("lambda sumMutant", sumMutant(1,5));
+    console.log("sumOrigin", sum(2,6));
+
+
+
+    console.log("==== empty parameter ====");
+    var getName = () => "Nicholas";
+
+    // effectively equivalent to:
+
+    var getNameOrigin = function() {
+        return "NicholasOrigin";
+    };
+
+    console.log("getName", getName());
+    console.log("getNameOrigin", getNameOrigin());
+
+
+
+
+    console.log("==== return Object ====");
+
+    var getTempItem = id => ({ id: id, name: "Temp" });
+
+    // effectively equivalent to:
+
+    var getTempItemOrigin = function(id) {
+
+        return {
+            id: id,
+            name: "Temp"
+        };
+    };
+
+    console.log("getTempItem", getTempItem(100));
+    console.log("getTempItemOrigin", getTempItemOrigin(200));
+
+
+    console.log("==== IIFE ====");
+    let person = ((name) => {
+
+        return {
+            getName: function() {
+                return name;
+            }
+        };
+
+    })("Nicholas");
+
+    console.log(person.getName());      // "Nicholas"
+
+
+    console.log("==== not create object ====");
+
+    var MyType = () => {};
+    let object = new MyType();
+
+    console.dir(object);
+</script>
+</body>
+</html>

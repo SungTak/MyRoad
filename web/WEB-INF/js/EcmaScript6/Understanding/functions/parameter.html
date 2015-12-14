@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    function makeRequest(url, timeout, callback) {
+
+        timeout = timeout || 2000;
+        callback = callback || function() {};
+
+        console.log("five", url, timeout, callback);
+
+    }
+    // 일반적인 디폴트 값을 주는 방식 OR연산자
+    // 문제점 : timeout이 맞는 0이 전달될 때 실제로 2000이 세팅되는 결점이 있음, 0은 false이기에..
+
+    function makeRequestForSafe(url, timeout, callback) {
+
+        timeout = (typeof timeout !== "undefined") ? timeout : 2000;
+        callback = (typeof callback !== "undefined") ? callback : function() {};
+
+        console.log("fivesafe", url, timeout, callback);
+
+    }
+    // 명시적으로 typeof를 사용해 undefined인 경우에만 디폴트 값을 주도록 방어할 수 있다.
+
+    function makeRequestFor6(url, timeout = 2000, callback = function() {}) {
+        console.log("six", url, timeout, callback);
+    }
+
+    makeRequest("www.seongtak", 0);
+    makeRequestForSafe("www.safe", 0);
+    makeRequestFor6("www.six");
+    makeRequestFor6("www.six", 3000, function() { return true});
+
+
+    console.log("==== 디폴트 값으로 함수를 호출 ====");
+    let incValue = 5;
+    function getValue() {
+        return incValue++;
+    }
+
+    function add(first, second = getValue()) {
+        return first + second;
+    }
+
+    console.log(add(1, 1));     // 2
+    console.log(add(1));        // 6
+    console.log(add(1));        // 7
+
+    console.log("==== 디폴트 값으로 인자를 호출 ====");
+    // 주의!! 디폴트 값으로 인자를 줄 때 인자 값을 넘기지 않는 데이터를 셋할땐 에러가 발생한다.
+    // first에 second를 디폴트 값으로 줄 수 있지만.. second에 디폴트 값이 없는 상태에서
+    // 인자를 주지 않으면 에러가 발생한다. (IE/ 크롬의 경우 Nan)
+    function addArgument(first = second, second) {
+    //function addArgument(first, second = first) {
+        return first + second;
+    }
+
+    // JavaScript는 재해석하고 만든다... 아래 코드들을..
+    // let first = 1;
+    // let second = 1;
+    console.log(addArgument(1, 1));     // 2
+
+    // let first = 1;
+    // let second = first;
+    console.log(addArgument(1));        // 2
+
+
+    console.log(addArgument(undefined, 1));        // 2
+
+
+    console.log("==== 디폴트 값으로 함수 + 인자 응용 ====");
+    function getValueArgument(value) {
+        return value + 5;
+    }
+
+    function addFunctionArguments(first, second = getValueArgument(first)) {
+        return first + second;
+    }
+
+    console.log(addFunctionArguments(1, 1));     // 2
+    console.log(addFunctionArguments(1));        // 7
+
+
+    console.log("=== Function Constructor ===");
+    var addF = new Function("first", "second", "return first + second");
+
+    console.log(addF(1, 1));     // 2
+
+//크롬에서 안됨 이유는 모름 ..
+ //   var addFunctionArgument = new Function("first", "second = first", "return first + second");
+
+ //   console.log(addFunctionArgument(1, 1));     // 2
+//    console.log(addFunctionArgument(1));        // 2
+</script>
+</body>
+</html>
