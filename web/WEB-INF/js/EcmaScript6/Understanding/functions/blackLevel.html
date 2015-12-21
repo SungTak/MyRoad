@@ -18,14 +18,14 @@
         console.log("inner", typeof doSomething);
         console.log(typeof doing);
 
-        // Throws a syntax error in ES5, not so in ES6
+        // Throws a syntax error in ES5 (use strict), not so in ES6
         function doSomething() {
             // ...
         }
 
         let doing = function() {
             // ...
-        }
+        };
 
         doSomething();
     }

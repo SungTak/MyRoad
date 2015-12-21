@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// (http://www.es6fiddle.net/)
+
+    function createPerson(name, age) {
+        return {
+            name: name,
+            age: age
+        };
+    }
+
+    console.log("일반적인 리터럴 객체 생성 방식 : ", createPerson("윤성탁", 28));
+
+
+    function createPersonByShorthand(name, age) {
+    return {
+            name,
+            age
+        };
+    }
+
+    console.log("shorthand 리터럴 객체 생성 방식 : ", createPersonByShorthand("오잉오", 30));
+
+
+
+    var person = {
+        name: "Nicholas",
+        sayName: function() {
+            console.log(this.name);
+        }
+    };
+
+    console.log("기존 리터럴 객체에 함수 프로퍼티 생성 방식 : ", person);
+
+
+
+    var personByConcise = {
+        name: "Nicholas2",
+        sayName() {
+            console.log(this.name);
+        }
+    };
+
+    console.log("리터럴 객체에 축약한 함수 프로퍼티 생성 방식 : ", personByConcise);
+</script>
+</body>
+</html>

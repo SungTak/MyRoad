@@ -11,6 +11,7 @@
 //<script type="text/javascript">
 // http://www.es6fiddle.net/
 // https://leanpub.com/understandinges6/read#leanpub-auto-clarifying-the-dual-purpose-of-functions
+// arrow function은 throw away의 특성을 가짐
 
     var reflect = value => value;
 
@@ -60,7 +61,7 @@
 
     console.log("==== return Object ====");
 
-    var getTempItem = id => ({ id: id, name: "Temp" });
+    var getTempItem = id => ({ id: id, name: "Temp" }); //object/긴 문단은 한번 감싸라!
 
     // effectively equivalent to:
 
@@ -92,10 +93,11 @@
 
     console.log("==== not create object ====");
 
-    var MyType = () => {};
+    var MyType = (a) => { this.a = a; };
     let object = new MyType();
 
     console.dir(object);
+    console.log(object.a);
 </script>
 </body>
 </html>

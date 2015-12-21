@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// (http://www.es6fiddle.net/)
+
+    function mixin(receiver, supplier) {
+        Object.keys(supplier).forEach(function(key) {
+            receiver[key] = supplier[key];
+        });
+
+        return receiver;
+    }
+
+    function EventTarget() {
+        this.a = "a";
+    }
+    EventTarget.prototype = {
+        constructor: EventTarget,
+        emit: function() {
+            return "emit";
+        },
+        on: function() {
+            return "on";
+        }
+    };
+
+    var myObject = {};
+    mixin(myObject, EventTarget.prototype);
+
+    myObject.emit("somethingChanged");
+    myObject.newF = function() {
+        return "not side effect prototype";
+    };
+
+    console.log("EventTarget", new EventTarget());
+    console.log("EventTarget의 prototype의 함수를 받았을 뿐 ㅎㅎ myObject", myObject);
+
+
+
+
+
+
+    var myAssignObject = {};
+    Object.assign(myAssignObject, EventTarget.prototype);
+    myAssignObject.newF15 = function() {
+        return "how ...?";
+    };
+
+    console.log("Object의 assign을 통해 함수를 받았음 영향력 없음", myAssignObject);
+
+
+
+
+
+    var receiver22 = {};
+
+    Object.assign(receiver22,
+        {
+            type: "js",
+            name: "file.js"
+        },
+        {
+            type: "css"
+        }
+    );
+
+    console.log(receiver22.type);     // "css"
+    console.log(receiver22.name);     // "file.js"
+    console.log("바로 리터럴 객체를 통해 assign도 됨, 다만 2번째 줬던 리터럴 중 같은 프로퍼티 이름은 덮여쓰여짐 ㅠㅠ", receiver22);
+
+
+
+
+
+
+
+
+    var receiver33 = {},
+        supplier33 = {
+            get name() {
+                return "file.js"
+            }
+        };
+    console.log(supplier33.get); //?? 어찌 접근하지?
+
+    Object.assign(receiver33, supplier33);
+
+    var descriptor = Object.getOwnPropertyDescriptor(receiver33, "name");
+
+    console.log(descriptor.value);      // "file.js"
+    console.log("assign은 accessor와 같은 심볼로된 키는 복사 안함", descriptor.get);        // undefined
+    console.log("descriptor : ", descriptor, "receiver33 : ", receiver33);
+</script>
+</body>
+</html>
