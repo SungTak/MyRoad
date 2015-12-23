@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    // properties on options represent additional parameters
+    function setCookie(name, value, options) {
+
+        options = options || {};
+
+        let secure = options.secure,
+            path = options.path,
+            domain = options.domain,
+            expires = options.expires;
+
+        console.log("기존방식", secure, path, domain, expires); // true, undefined, undefined, 60000
+    }
+
+    // third argument maps to options
+    setCookie("type", "js", {
+        secure: true,
+        expires: 60000
+    });
+
+    setCookie("why", "js"); // all undefined
+
+
+
+
+    // {}
+    function setCookie2(name, value, { secure, path, domain, expires }) {
+
+        console.log("새로운 방식", secure, path, domain, expires); // true2, undefined, undefined, 600002
+    }
+
+    setCookie2("type", "js", {
+        secure: "true2",
+        expires: 600002
+    });
+    //setCookie2("why", "js"); // 매개변수가 없으면 에러!
+    setCookie2("why", "js", {}); // 빈 객체는 괜찮음
+
+
+
+
+    // 내부에서 매핑하는 법
+    function setCookie3(name, value, options) {
+        let { secure, path, domain, expires } = options;
+
+        console.log("내부에서 옵션 세팅 방식", secure, path, domain, expires); // true3, undefined, undefined, 300002
+    }
+
+    setCookie3("type", "js", {
+        secure: "true3",
+        expires: 300002
+    });
+    // setCookie3("why", "js"); // 마찬가지로 매개변수가 없으면 에러!
+    setCookie3("why", "js", {}); // 빈 객체는 괜찮음
+
+
+
+
+
+    // 디폴트 값을 줌
+    function setCookie4(name, value, { secure, path, domain, expires } = {}) {
+
+        console.log("기본값 옵션 세팅 방식", secure, path, domain, expires); // false, undefined, undefined, 400002
+    }
+
+    setCookie4("type", "js", {
+        secure: false,
+        expires: 400002
+    });
+    setCookie4("why", "js"); // 마찬가지로 매개변수가 없지만 기본 값 덕분에 에러가 안남!!
+    setCookie4("why", "js", {}); // 빈 객체는 괜찮음
+
+
+
+
+
+
+
+
+
+
+    // 전체적으로 기본 값 세팅!
+    function setCookie5(name, value,
+        {
+            secure = false,
+            path = "/",
+            domain = "example.com",
+            expires = new Date(Date.now() + 360000000)
+        }
+    ) {
+
+        console.log("전체 기본값 옵션 세팅 방식", secure, path, domain, expires);
+    }
+
+
+    setCookie5("type", "js", {
+        secure: "true55",
+        expires: 550002
+    });
+    // setCookie5("why", "js"); // 기본적인 객체 프로퍼티 세팅은 있으나 (객체)매개변수가 없을 경우에 대한 세팅이 없어 에러가 난다.
+    setCookie5("why", "js", {}); // 빈 객체는 괜찮음
+
+
+
+
+
+
+
+
+    // 에러를 방지하자.
+    function setCookie6(name, value,
+        {
+            secure = false,
+            path = "/",
+            domain = "example.com",
+            expires = new Date(Date.now() + 360000000)
+        } = {
+            secure: false,
+            path: "/",
+            domain: "example.com",
+            expires: new Date(Date.now() + 360000000)
+        }
+    ) {
+
+         console.log("전체 기본값 옵션 세팅 방식에 객체까지 기본값", secure, path, domain, expires);
+    }
+
+    setCookie6("type", "js", {
+        secure: "true65",
+        expires: 666662
+    });
+    setCookie6("why", "js"); // 객체에 대한 기본 값도 있으니 걱정이 없음음
+   setCookie6("why", "js", {}); // 빈 객체는 괜찮음
+
+
+
+
+
+
+
+   // 리펙토링을 하자
+   var setCookieDefaults = {
+        secure: false,
+        path: "/",
+        domain: "example.com",
+        expires: new Date(Date.now() + 360000000)
+    };
+
+    function setCookie7(name, value,
+        {
+            secure = setCookieDefaults.secure,
+            path = setCookieDefaults.path,
+            domain = setCookieDefaults.domain,
+            expires = setCookieDefaults.expires
+        } = setCookieDefaults
+    ) {
+
+        console.log("최종 리펙토링", secure, path, domain, expires);
+    }
+
+    setCookie7("type", "js", {
+        secure: "777777",
+        expires: 776667
+    });
+    setCookie7("why", "js"); // 객체에 대한 기본 값도 있으니 걱정이 없음음
+    setCookie7("why", "js", {}); // 빈 객체는 괜찮음
+
+</script>
+</body>
+</html>
