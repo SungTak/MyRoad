@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!-- https://leanpub.com/understandinges6/read -->
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript"> // ECMA6에서는 <!-- -->주석이 안됨..!!
+
+let message = `Hello world!`;
+
+console.log(message);               // "Hello world!"
+console.log(typeof message);        // "string"
+console.log(message.length);        // 12
+
+var hello = `hello Ecmascript 6!`;
+console.log(hello);               // "hello Ecmascript 6!"
+console.log(typeof hello);        // "string"
+console.log(hello.length);        // 19
+
+let messageSlash = `\`Hello\` world!`;
+
+console.log(messageSlash);               // "`Hello` world!"
+console.log(typeof messageSlash);        // "string"
+console.log(messageSlash.length);        // 14
+
+let multi = "Multiline \
+string";
+
+console.log(multi);
+
+let multiNewline = "Multiline \n\
+string";
+
+console.log(multiNewline);
+
+let multiNotSlash = `Multiline
+string`;
+
+console.log(multiNotSlash);           // "Multiline
+                                //  string"
+console.log(multiNotSlash.length);    // 16
+
+
+let multiNotSlashAndSpace = `Multiline
+               string`;
+
+console.log(multiNotSlashAndSpace);           // "Multiline
+                                //                 string"
+console.log(multiNotSlashAndSpace.length);    // 31
+
+
+let name = "Nicholas",
+    concat = `Hello, ${name}.`;
+
+console.log(concat);       // "Hello, Nicholas."
+
+var varname = "Nicholas Var",
+    varconcat = `Hello, ${varname}.`;
+
+console.log(varconcat);       // "Hello, Nicholas Var."
+
+var varname2 = "Nicholas Var",
+    varconcat2 = "Hello, ${varname2}.";
+
+console.log(varconcat2);       // "Hello, Nicholas Var."
+
+
+let tagMessage = tag`Hello world`;
+console.log(tagMessage);
+
+function tag(literals, ...substitutions) {
+    console.log(literals);
+    console.log(...substitutions);
+    // return a string
+}
+
+//let rowtagMessage = string.tag`Hello \nworld`;
+//console.log(rowtagMessage);
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!-- https://leanpub.com/understandinges6/read -->
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript"> // ECMA6에서는 <!-- -->주석이 안됨..!!
+    var msg = "Hello world!";
+
+    console.log(msg.startsWith("Hello"));       // true
+    console.log(msg.endsWith("!"));             // true
+    console.log(msg.includes("o"));             // true
+
+    console.log(msg.startsWith("o"));           // false
+    console.log(msg.endsWith("world!"));        // true
+    console.log(msg.includes("x"));             // false
+
+    console.log(msg.startsWith("o", 4));        // true
+    console.log(msg.endsWith("o", 8));          // true
+    console.log(msg.includes("o", 8));          // false
+
+    console.log(msg.endsWith("", 0));          // true
+    console.log(msg.endsWith("H", 1));          // true //첫번째의 마지막이네..앞에서 ㅋㅋ
+
+    console.log("x".repeat(3));         // "xxx"
+    console.log("hello".repeat(2));     // "hellohello"
+    console.log("abc".repeat(4));       // "abcabcabcabc"
+</script>
+</body>
+</html>

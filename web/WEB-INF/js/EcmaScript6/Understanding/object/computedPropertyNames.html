@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// (http://www.es6fiddle.net/)
+    var person = {},
+        lastName = "last name";
+
+    person["first name"] = "Nicholas";
+    person[lastName] = "Zakas";
+
+    console.log("일반적인 동적 프로퍼티 추가", person["first name"], person[lastName], person["last name"], person);
+
+
+    var lastName2 = "last name direct";
+
+    var person2 = {
+        "first name": "Nicholas",
+        [lastName2]: "Zakas222"
+    };
+
+    console.log("객체에 [변수명] 형식으로 바로 프로퍼티를 추가할 수 있다", person2["first name"], person2[lastName2], person2);
+
+
+    var suffix = " name suffix";
+
+    var person3 = {
+        ["first" + suffix]: "Nicholas333",
+        ["last" + suffix]: "Zakas333"
+    };
+
+    console.log("객체에서 변수 명을 연산할 수도 있음", person3["first name"], person3["last name"], person3);
+</script>
+</body>
+</html>

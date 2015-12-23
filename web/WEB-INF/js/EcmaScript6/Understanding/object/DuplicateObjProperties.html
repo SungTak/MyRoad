@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// (http://www.es6fiddle.net/)
+
+
+"use strict";
+
+var person = {
+    name: "Nicholas",
+    name: "Greg"        // syntax error in ES5 strict mode
+};
+
+console.log(person.name);       // "Greg"
+
+
+
+var obj = {
+    a: 1,
+    0: 1,
+    c: 1,
+    2: 1,
+    b: 1,
+    1: 1
+};
+
+obj.d = 1;
+
+console.log(Object.keys(obj).join(""));     // "012acbd"
+
+
+var parent = {
+    z: 1,
+    9: 1,
+    y: 1,
+    8: 1
+};
+
+var child = Object.assign(Object.create(parent), {  // parent상속 객체와 리터럴 객체를 합침
+    a: 1,
+    0: 1,
+    c: 1,
+    2: 1,
+    b: 1,
+    1: 1
+});
+
+var result = [];
+
+for (var key in child) {
+    result.push(key);
+}
+
+console.log(result.join(""));     // "012acb89zy" //하지만 각 객체의 프로퍼티별로 정리되어 병합됨
+</script>
+</body>
+</html>

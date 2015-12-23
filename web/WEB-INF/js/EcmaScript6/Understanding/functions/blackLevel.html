@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+
+// 브라우저는 안됨 (http://www.es6fiddle.net/)
+ //   "use strict";
+
+    if (true) {
+
+        console.log("inner", typeof doSomething);
+        console.log(typeof doing);
+
+        // Throws a syntax error in ES5 (use strict), not so in ES6
+        function doSomething() {
+            // ...
+        }
+
+        let doing = function() {
+            // ...
+        };
+
+        doSomething();
+    }
+
+    console.log("outer", typeof doSomething); //?? use strict을 제거해도 언디파인인데;;
+</script>
+</body>
+</html>

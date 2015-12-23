@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    function getValue(condition) {
+
+        if (condition) {
+            var value = "blue";
+
+            // other code
+
+            return value;
+        } else {
+            // value exists here with a value of undefined
+            console.log("value가 선언되어있다", value);
+            return null;
+
+        }
+        // value exists here with a value of undefined
+        console.log("리턴때문에 호출되지 않지만. value는 존재한다", value);
+    }
+
+
+
+    console.log(getValue('aaa'));
+    console.log(getValue());
+
+</script>
+</body>
+</html>

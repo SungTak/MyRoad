@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// (http://www.es6fiddle.net/)
+
+let name = "windows10";
+let person = {
+    name : "liberty",
+    getGreeting() {
+        return "Hello " + this.name;
+    }
+};
+
+
+console.log(person.getGreeting());
+
+// prototype is person
+let friend = Object.create(person);
+friend.name = "swarm";
+console.log(friend.getGreeting());                      // "Hello"
+console.log(Object.getPrototypeOf(friend) === person);  // true
+console.log(friend.__proto__ === person);
+
+console.log("==== use super keyword ====");
+
+// super!
+let younger = {
+    name : "original",
+    __proto__: person,
+    getGreeting() {
+        return super.getGreeting() + ", hi! superman";
+    }
+}
+console.log(younger.getGreeting());                      // "Hello"
+console.log(Object.getPrototypeOf(younger) === person);  // true
+console.log(younger.__proto__ === person);               // true
+
+
+
+let baby = {
+    name : "newest",
+    __proto__: younger
+}
+
+console.log(baby.getGreeting());
+</script>
+</body>
+</html>

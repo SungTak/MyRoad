@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+// (http://www.es6fiddle.net/)
+
+
+let person = {
+    getGreeting() {
+        return "Hello";
+    }
+};
+
+let dog = {
+    getGreeting() {
+        return "Woof";
+    }
+};
+
+// prototype is person
+let friend = Object.create(person);
+console.log(friend.getGreeting());                      // "Hello"
+console.log(Object.getPrototypeOf(friend) === person);  // true
+
+// set prototype to dog
+Object.setPrototypeOf(friend, dog);
+console.log(friend.getGreeting());                      // "Woof"
+console.log(Object.getPrototypeOf(friend) === dog);     // true
+
+
+console.log("==== use __proto__ ====");
+
+
+
+
+// set prototype to dog ( 친구가 개가 됨 )
+friend.__proto__ = dog;
+console.log(friend.getGreeting());                      // "Woof"
+console.log(friend.__proto__ === dog);                  // true
+console.log(Object.getPrototypeOf(friend) === dog);     // true
+
+
+
+// prototype is person
+let brother = {
+    __proto__: person,
+
+    getGreeting() {
+        // same as this.__proto__.getGreeting.call(this)
+        return Object.getPrototypeOf(this).getGreeting.call(this) + ", hi!";
+    }
+};
+console.log(brother.getGreeting());                      // "Hello"
+console.log(Object.getPrototypeOf(brother) === person);  // true
+console.log(brother.__proto__ === person);               // true
+
+
+console.log("==== use super keyword ====");
+
+// super!
+let younger = {
+    __proto__: person,
+    getGreeting() {
+        // in the previous example, this is the same as:
+        // 1. Object.getPrototypeOf(this).getGreeting.call(this)
+        // 2. this.__proto__.getGreeting.call(this)
+        return super.getGreeting() + ", hi! superman";
+    }
+}
+console.log(younger.getGreeting());                      // "Hello"
+console.log(Object.getPrototypeOf(younger) === person);  // true
+console.log(younger.__proto__ === person);               // true
+
+
+
+console.log("==== 2 depth extends proto ====");
+
+// prototype is friend
+let boy = {
+    __proto__: brother
+};
+
+// console.log(boy.getGreeting()); // 에러  this가 브라더가 되어 무한 재귀호출.. 스택오버플로우 에러 발생
+
+let baby = {
+    __proto__: younger
+}
+
+console.log(baby.getGreeting());
+</script>
+</body>
+</html>

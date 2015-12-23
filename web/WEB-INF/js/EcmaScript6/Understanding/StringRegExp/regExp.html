@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!-- https://leanpub.com/understandinges6/read -->
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript"> // ECMA6에서는 <!-- -->주석이 안됨..!!
+
+var text = "hello1 hello2 hello3",
+    pattern = /hello\d\s?/,
+    result = pattern.exec(text),
+    globalPattern = /hello\d\s?/g,
+    globalResult = globalPattern.exec(text);
+
+    var stickyPattern = /hello\d\s?/ // /hello\d\s?/y; //y가 안됨-_-;;
+    stickyPattern = new RegExp(stickyPattern, "y"); //역시나 안됨;ㅠㅠ
+    var stickyResult = stickyPattern.exec(text);
+
+    console.log(result[0]);         // "hello1 "
+    console.log(globalResult[0]);   // "hello1 "
+    console.log(stickyResult[0]);   // "hello1 "
+
+    console.log(pattern.lastIndex);         // 0
+    console.log(globalPattern.lastIndex);   // 7
+    console.log(stickyPattern.lastIndex);   // 7
+
+    result = pattern.exec(text);
+    globalResult = globalPattern.exec(text);
+    stickyResult = stickyPattern.exec(text);
+
+    console.log(result[0]);         // "hello1 "
+    console.log(globalResult[0]);   // "hello2 "
+    console.log(stickyResult[0]);   // "hello2 "
+
+    console.log(pattern.lastIndex);         // 0
+    console.log(globalPattern.lastIndex);   // 14
+    console.log(stickyPattern.lastIndex);   // 14
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    let value1 = 25,
+    value2 = 50;
+
+    console.log(Math.max(value1, value2));      // 50
+
+
+    let values = [25, 50, 75, 100]
+
+    console.log(Math.max.apply(Math, values));  // 100
+
+    // equivalent to
+    // console.log(Math.max(25, 50, 75, 100));
+    console.log(Math.max(...values));           // 100
+
+    let minusValues = [-25, -50, -75, -100]
+
+    console.log(Math.max(...minusValues, 0));        // 0
+
+    let sortArr = [100, 5, 20, 71, 1001, 0];
+    var result = sortArr.sort((a, b) => a - b); //????? ? ?
+    console.log(result);
+
+</script>
+</body>
+</html>

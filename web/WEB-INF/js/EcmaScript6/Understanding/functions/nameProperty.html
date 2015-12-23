@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+
+// http://www.es6fiddle.net/ 여기선 잘되네 ㅎㅎ;;
+
+    function doSomething() {
+        // ...
+    }
+
+    var doAnotherThing = function() {
+        // ...
+    };
+
+    console.log(doSomething.name);          // "doSomething"
+    console.log(doAnotherThing.name);       // "doAnotherThing"  브라우저에선 빈 값이 나온다(IE는 undefined)
+
+    var doSomethingE = function doSomethingElse() {
+        // ...
+    };
+
+    var person = {
+        get firstName() {
+            return "Nicholas"
+        },
+        sayName: function() {
+            console.log(this.name);
+        }
+    }
+
+    console.log(doSomethingE.name);      // "doSomethingElse"
+    console.log(person.sayName.name);   // "sayName"
+    console.log(person.firstName.name); // "get firstName" 그래도 이건 어디서든 안나옴;
+    //console.log(person['get firstName']()); //ERROR;;
+
+    console.log(doAnotherThing.bind().name);   // "bound doAnotherThing"
+    console.log((new Function()).name);     // "anonymous"
+</script>
+</body>
+</html>

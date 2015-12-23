@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//<script type="text/javascript">
+
+    function mixArgs(first, second) {
+    // 'use strict';
+    console.log(first === arguments[0]);
+    console.log(second === arguments[1]);
+
+    first = "c";
+    second = "d";
+
+    console.log(first === arguments[0]);
+    console.log(second === arguments[1]);
+    }
+
+    mixArgs("a", "b");
+
+    console.log("=== 디폴트 값 없이 2번째 인자 없음 ===");
+
+    mixArgs("a");
+
+    // Ecma5의 nonstrict mode에서는 모두 true가 나온다.
+    // first, second를 바꾸면 argument도 함께 update되는 것이다.
+
+    console.log("=== 디폴트 값이 있는데 2번째 인자 없음 ===");
+
+    function mixArgsForEcma6(first, second = "b") {
+        console.log(arguments);
+
+        console.log(first === arguments[0]);
+        console.log(second === arguments[1]);
+        first = "c";
+        second = "d"
+
+        console.log(arguments);
+        console.log(first === arguments[0]);
+        console.log(second === arguments[1]);
+    }
+
+    mixArgsForEcma6("a");
+
+    // default 값을 주고 있으면서 인자를 다 넘기지 않으면 arguments는 1개 밖에 없어서 second와 false가 난다.
+    // b vs undefined
+</script>
+</body>
+</html>
