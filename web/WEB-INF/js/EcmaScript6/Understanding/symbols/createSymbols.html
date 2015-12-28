@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    /*
+        심볼은 객체 private 멤버로 부터 시작되었음
+        자바스크립트 개발자들은 오래전부터 원한 기능임
+
+        심볼은 새로운 프리미티 타입임
+    */
+
+
+    var firstName = Symbol();
+    var person = {};
+
+    person[firstName] = "Nicholas";
+    console.log(person[firstName]);     // "Nicholas"
+
+
+    console.log("==== 주의! ====");
+    // var newFirstName = new Symbol(); // 객체가 아니라 프리미티 타입이다 new 가 불가능하다. 생성자가 없다!
+    var newObjName = new Object(firstName); // new Object를 쓰면 되긴하는데.. 별로 추천하지 않는다.
+    console.log(person[newObjName]); //니콜라스 나옴 ㄷㄷㄷ
+    console.log(typeof newObjName, typeof firstName);
+
+
+
+
+
+
+    console.log("==== 심볼에 문자열을 넣으면?? ====");
+    var stringName = Symbol("first name");
+    var toy = {};
+
+    toy[stringName] = "train";
+
+    console.log("first name" in toy); // false
+    console.log(toy[stringName]); // train
+    console.log(stringName); //Symbol("first name")
+    console.dir(toy);
+
+
+
+
+    console.log("==== symbol에 read only ====");
+    var firstName2 = Symbol("first name2");
+
+    var person2 = {
+        [firstName2]: "Nicholas 니콜라스임"
+    };
+    Object.defineProperty(person2, firstName2, { writable: false });
+
+    var lastName2 = Symbol("last name2");
+
+    Object.defineProperties(person2, {
+        [lastName2]: {
+            value: "Zakas 자카스",
+            writable: false
+        }
+    });
+    person2.addData = "addgg";
+
+    console.log(person2[firstName2]);     // "Nicholas"
+    console.log(person2[lastName2]);      // "Zakas"
+    console.dir(person2);
+
+    // person2[firstName2] = "possible??"; // 불가능~
+
+
+
+
+    // 타입 강제는 자바스크립트에서 중요함, 다른 타입들은 유연한데 심볼은 유연하지 않다.
+    // 심볼은 논리적으로 다른 타입과 같지 않기 때문
+    // 심볼은 숫자/문자로 강제할 수 없다.
+    console.log("==== 심볼 강제 ====");
+    var uid = Symbol.for("uid"),
+    desc = String(uid);
+
+    console.log(desc);
+
+</script>
+</body>
+</html>

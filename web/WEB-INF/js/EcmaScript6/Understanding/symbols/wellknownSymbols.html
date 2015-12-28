@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    // http://www.es6fiddle.net/
+    console.log("==== @@hasInstance ====");
+    var arr = [];
+    var obj = {};
+
+    console.log(arr instanceof Array); //true
+  //  console.log(Array[Symbol.hasInstance](arr)); //true 브라우저에선 안됨
+    console.log(obj instanceof Array); //false
+ //   console.log(Array[Symbol.hasInstance](obj)); //false 브라우저에선 안됨
+
+
+
+    console.log("==== 프로퍼티 정의? ====");
+    function MyObject() {
+        // ...
+    }
+
+    Object.defineProperty(MyObject, Symbol.hasInstance, {
+        value: function(v) {
+            return false; // 여기서 재정의한다는거 같은데;;
+        }
+    });
+
+    var obj2 = new MyObject();
+
+    console.log(obj2 instanceof MyObject);       // false?? 추가가 안되서... -_-; true 나옴;; 브라우저도 es6피들에도..
+    console.dir(obj2);
+
+    // 결론 : 혼란과 예상할 수 없는 효과를 줄 수 있기 때문에 추천하지 않는다.
+    // 다만, 사용할 함수와 필요할때만 오버라이트하는건 좋은 생각이다.
+
+
+
+
+    console.log("==== @@isConcatSpreadable ====");
+    let colors1 = [ "red", "green" ],
+    colors2 = colors1.concat([ "blue", "black" ], "brown");
+
+    console.log(colors2.length);    // 4
+    console.log(colors2);           // ["red","green","blue","black", "brown"]
+
+
+
+
+    // isConcatSpreadable은 boolean을 대입
+    let collection = {
+        0: "Hello",
+        1: "world",
+        length: 2 ,
+        [Symbol.isConcatSpreadable] : true
+    };
+
+    let message = [ "Hi" ].concat(collection);
+
+    console.log(message.length);    // 3
+    console.log(message);           // ["hi","Hello","world"] 안되요...; 두곳다.
+
+
+
+
+
+
+    console.log("==== @@match @@replace @@search @@split====");
+    let hasLengthOf10 = {
+        [Symbol.match] : function(value) {
+            return value.length === 10 ? [value.substring(0, 10)] : null;
+        },
+        [Symbol.replace] : function(value, replacement) {
+            return value.length === 10 ? replacement + value.substring(0, 10) : value;
+        },
+        [Symbol.search] : function(value) {
+            return value.length === 10 ? 0 : -1;
+        },
+        [Symbol.split] : function(value) {
+            return value.length === 10 ? ["", ""] : [value];
+        }
+    };
+
+    let message1 = "Hello world",   // 11 characters
+        message2 = "Hello John";    // 10 characters
+
+
+    console.log("==== @@match ====");
+    let match1 = message1.match(hasLengthOf10),
+        match2 = message2.match(hasLengthOf10);
+
+    console.log(match1);            // null (브라우저는 다른 결과 적용안되는듯..) 전부..안됨
+    console.log(match2);            // ["Hello John"]
+    console.log("원래 기능", message1.match(/^.{10}$/)); // null
+    console.log("원래 기능", message2.match(/^.{10}$/)); // 동일, 약간 다름 객체임
+
+
+
+    console.log("==== @@replace ====");
+    let replace1 = message1.replace(hasLengthOf10),
+    replace2 = message2.replace(hasLengthOf10);
+
+    console.log(replace1);          // "Hello world"
+    console.log(replace2);          // "undefinedHello John"
+
+
+
+    console.log("==== @@search ====");
+    let search1 = message1.search(hasLengthOf10),
+    search2 = message2.search(hasLengthOf10);
+
+    console.log(search1);           // -1
+    console.log(search2);           // 0
+
+
+
+
+    console.log("==== @@split ====");
+    let split1 = message1.split(hasLengthOf10),
+    split2 = message2.split(hasLengthOf10);
+
+    console.log(split1);            // ["Hello world"]
+    console.log(split2);            // ["", ""]
+
+
+
+
+    // number, string, default 로 구분.. valueOf와 toString의 값이 프리미티 타입일 때 리턴
+    console.log("==== @@toPrimitive ====");
+    function Temperature(degrees) {
+        this.degrees = degrees;
+    }
+
+    Temperature.prototype[Symbol.toPrimitive] = function(hint) {
+
+        switch (hint) {
+            case "string":
+                return this.degrees + "\u00b0"; // degrees symbol
+
+            case "number":
+                return this.degrees;
+
+            case "default":
+                return this.degrees + " degrees";
+        }
+    };
+
+    var freezing = new Temperature(32);
+
+    console.log(freezing + "!!!");            // "32 degrees!" -> not String
+    console.log(freezing / 2);              // 16
+    console.log(String(freezing));          // "32 도(기호)"
+
+
+
+
+
+    console.log("==== @@toStringTag ====");
+    function isArray(value) {
+        return Object.prototype.toString.call(value) === "[object Array]";
+    }
+    console.log(isArray([]));   // true
+
+    function supportsNativeJSON() {
+        return typeof JSON !== "undefined" &&
+            Object.prototype.toString.call(JSON) === "[object JSON]";
+    }
+    console.log(supportsNativeJSON());
+
+    function Person(name) {
+        this.name = name;
+    }
+
+    Person.prototype[Symbol.toStringTag] = "Person";
+
+    var me = new Person("Nicholas");
+
+    console.log(me.toString());                         // "[object Person]" 원래는 [object Object]
+    console.log(Object.prototype.toString.call(me));    // "[object Person]"
+
+    Person.prototype.toString = function() {
+        return this.name;
+    };
+
+    console.log(me.toString());                         // 니콜라스 (toString 오버라이트)
+    console.log(Object.prototype.toString.call(me));    // "[object Person]"
+    console.log(typeof me);  // 그래도 변화없음
+    console.log(me instanceof Object); // 마찬가지 toString을 수정하는것.
+
+
+
+
+    // with는 자바스크립트에서 논란이 가장 많은 것 중에 하나임
+    // 그래서 strict mode 에선 사용할 수 없음
+    console.log("==== @@unscopables ====");
+
+
+    // built into ECMAScript 6 by default
+    // array에 사용된다, with없이 생성한 프로퍼티를 나타내기 위해
+    // 잘모르겠음;;
+    Array.prototype[Symbol.unscopables] = Object.assign(Object.create(null), {
+        copyWithin: true,
+        entries: true,
+        fill: true,
+        find, true,
+        findIndex: true,
+        keys: true,
+        values: true
+    });
+
+</script>
+</body>
+</html>
