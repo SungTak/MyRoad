@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+
+    let colors = [ "red", "green", "blue" ];
+
+    let [ firstColor, secondColor ] = colors;
+    let [ s1, s2, s3, s4] = colors;
+
+    console.log("순서대로 받는건가?", firstColor, secondColor);        // "red", "green"
+    console.log("순서대로 받을까?", s1, s2, s3, s4);
+
+
+    // 첫, 둘은 무시하고 세번째만 받음
+    let [ , , thirdColor] = colors;
+    console.log("세번째만 받음", thirdColor);
+
+
+
+
+
+
+    // 기존 변수 이름이 똑같다면??!
+    let firstColor2 = "black",
+    secondColor2 = "purple";
+
+    console.log("할당 받기전", firstColor2, secondColor2);
+
+    [ firstColor2, secondColor2 ] = colors; //let을 붙이면 중복 선언 에러가 난다.
+
+    console.log("할당 받은 후", firstColor2, secondColor2);        // "red" "green"
+
+
+
+
+
+
+    // Ecma5에서 스와핑
+    // Swapping variables in ECMAScript 5
+    let a = 1,
+        b = 2,
+        tmp;
+
+    tmp = a;
+    a = b;
+    b = tmp;
+
+    console.log(a);     // 2
+    console.log(b);     // 1
+
+
+
+    // Ecma6에서 스와핑
+    // Swapping variables in ECMAScript 6
+    let a2 = 12,
+        b2 = 22;
+
+    console.log("스와핑 전", a2, b2); //12, 22
+
+    [ a2, b2 ] = [ b2, a2 ];
+
+    console.log("스와핑 후", a2, b2); //22, 12
+
+
+    // null/ undefined 스와핑
+    let vNull = null,
+        vUndefined = undefined
+
+    // [ vNull, vUndefined ] = [ vUndefined, vNull ]; //에러가 납니다.
+
+
+
+
+
+
+    // 중첩 배열 디스트러처링하기
+    let colors3 = [ "red", [ "green", "lightgreen" ], "blue" ];
+    let [ firstColor3, [ secondColor3 ] ] = colors3;
+    let [ , [ , thirdColor3 ] ] = colors3;
+
+    console.log(firstColor3);        // "red"
+    console.log(secondColor3);       // "green"
+    console.log(thirdColor3); //lightgreen
+
+
+
+
+    // rest 아이템, ...
+    let colors4 = [ "red", "green", "blue" ];
+
+    let [ firstColor4, ...restColors ] = colors4;
+
+    console.log(firstColor4);        // "red"
+    console.log(restColors.length); // 2
+    console.log(restColors[0]);     // "green"
+    console.log(restColors[1]);     // "blue"
+    console.log(restColors[2]);     // undefined
+
+
+
+
+    // 배열 복사 in Ecma 5
+    // cloning an array in ECMAScript 5
+    var colors5 = [ "red", "green", "blue" ];
+    var clonedColors = colors5.concat();
+
+    console.dir(clonedColors);      //"[red,green,blue]"
+
+
+
+
+
+    // in Ecma 6
+    // cloning an array in ECMAScript 6
+    let colors6 = [ "red", "green", "blue" ];
+    let [ ...clonedColors2 ] = colors6;
+
+    console.dir(clonedColors2);      //"[red,green,blue]"
+
+
+
+    // ... rest 주의점
+   //let [ ...clonedColors3, lastColor2 ] = colors6;  // ...이후에 ,가 오면 안된다.
+
+
+
+
+
+
+
+
+
+   // 객체, 배열 믹싱!
+   let node = {
+        type: "Identifier",
+        name: "foo",
+        loc: {
+            start: {
+                line: 1,
+                column: 10
+            },
+            end: {
+                line: 1,
+                column: 4
+            }
+        },
+        range: [0, 3]
+    };
+
+    let {
+        loc: { start },
+        range: [ startIndex ],
+        range
+    } = node;
+
+    console.log(start.line);        // 1
+    console.log(start.column);      // 10
+    console.log(startIndex);        // 0
+    console.log(range);        // 배열요
+</script>
+</body>
+</html>

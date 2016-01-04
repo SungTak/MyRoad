@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    // symbol의 for메서드는 글로벌 심볼에서 uid키를 찾아본다. 있으면 반환받고 없으면 등록!
+    var uid = Symbol.for("uid");
+    var object = {};
+
+    object[uid] = "12345";
+
+    console.log(object[uid]);       // "12345"
+    console.log(uid);               // "Symbol(uid)"
+
+    var uid2 = Symbol.for("uid");
+
+    console.log(uid === uid2);      // true
+    console.log(object[uid2]);      // "12345"
+    console.log(uid2);              // "Symbol(uid)"
+
+
+
+    console.log("==== 심볼 찾기 ====");
+    var uid3 = Symbol.for("uid");
+    console.log(Symbol.keyFor(uid3));    // "uid"
+
+    var uid4 = Symbol.for("uid");
+    console.log(Symbol.keyFor(uid4));   // "uid"
+
+    var uid5 = Symbol("uid");
+    console.log(Symbol.keyFor(uid5));   // undefined, 글로벌 심볼에 등록되지 않음
+
+    // 팁 : 글로벌 심볼은 공유하기 위한 환경, 단지 글로벌 스코프이다. 이름 충돌을 피하기 위해 네이스페이스 방법을 쓸 수 있다.
+    // 예) Symbol.for("jquery.element");
+
+
+
+
+
+    // Object.keys(), Object.getOwnPropertyNames()와 같은 메서드가 추가됨
+    console.log("==== 객체에서 심볼 찾기 ====");
+    var uid6 = Symbol.for("uid6");
+    var object6 = {
+        [uid6]: "12345"
+    };
+
+    var symbols = Object.getOwnPropertySymbols(object6);
+
+    console.log(symbols.length);        // 1
+    console.log(symbols[0]);            // "Symbol(uid)"
+    console.log(object[symbols[0]]);    // "12345"
+</script>
+</body>
+</html>

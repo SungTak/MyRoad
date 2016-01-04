@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    let options = {
+        repeat: true,
+        save: false
+    };
+
+    // in Ecma5
+    let repeat = options.repeat,
+        save = options.save;
+
+    console.log("Ecma 5에선 직접 풀어 각 변수에 대입하였음", repeat, save);
+
+
+
+
+    let node = {
+        type: "Identifier",
+        name: "foo"
+    };
+
+    let { type, name } = node; // {로 묶어서 사용함!}
+
+    console.log("바로 대입된 내용들", type, name);      // "Identifier", "foo"
+
+
+
+
+
+
+    // 항상 초기화를 잊으면 안됨, 초기화를 하지 않으면 에러가 발생
+    // syntax error!
+    //var { type, name };
+
+    // syntax error!
+    //let { type, name };
+
+    // syntax error!
+    //const { type, name };
+
+
+
+
+
+    // 할당
+    let node2 = {
+        type: "Identifier22",
+        name: "foo22",
+    },
+    type2 = "Literal",
+    name2 = 5;
+
+    console.log("할당 받기 전", type2, name2);      // "Literal", 5
+
+    // assign different values using structuring
+    ({ type2, name2 } = node2);
+
+    console.log("이름이 다른 상태에서 할당 받은 후", type2, name2);      // "Identifier22", "foo22"이 아니다. 이름이 똑같아야한다!!
+
+    node2 = {
+        type2: "Identifier22",
+        name2: "foo22",
+    },
+    ({ type2, name2 } = node2);
+
+    console.log("이름이 같은 상태에서 할당 받은 후", type2, name2);      // "Identifier22", "foo22"
+
+
+
+
+    // 객체 할당
+    // 아래 코드는 수행이 안됨;; 에러남. 이유를 모르겠음(기존 샘플도 에러남)
+    let node3 = {
+        type: "Identifier33",
+        name: "foo33"
+    },
+    anotherNode = {};
+
+    // ({ anotherNode.type, anotherNode.name } = node3);
+    anotherNode = node3;
+
+    console.log("객체의 프로퍼티에 할당", anotherNode.type, anotherNode.name);  // "Identifier33", "foo33"
+
+
+
+
+
+    // 기본 값이 없을 때
+    let node4 = {
+        type4: "Identifier",
+        name4: "foo"
+    };
+
+    let { type4, name4, value4 } = node4;
+
+    console.log("value는 객체에 없다", type4, name4, value4);      // "Identifier", "foo", undefined
+
+
+
+    // 기본 값 세팅
+    let node5 = {
+        type5: "Identifier5555",
+        name5: "foo5555"
+    };
+
+    let { type5, name5, value5 = true } = node5;
+
+    console.log("value에 기본값을 줌", type5, name5, value5);      // "Identifier", "foo" undefined
+
+
+
+
+    // 다른 이름으로 할당 받기
+    let node6 = {
+        type6: "Identifier66",
+        name6: "foo66"
+    };
+
+    let { type6: localType, name6: localName } = node6;
+
+    // 참고 : type6, name6는 정의되지 않는 변수라고 함
+    console.log("다른이름으로 할당 받기", localType, localName);     // "Identifier66", "foo66"
+
+
+
+
+    // 다름 이름 할당 받을 때 디폴트 값 설정
+    let node7 = {
+        type7: "Identifier77"
+    };
+
+    let { type7: localType2, name: localName2 = "bar" } = node7;
+
+    console.log("name은 기본값", localType2, localName2);     // "Identifier77", "bar"
+
+
+
+
+
+    // 중첩 객체 디스트러처링하기
+    let node8 = {
+        type8: "Identifier",
+        name8: "foo",
+        loc: {
+            start: {
+                line: 1,
+                column: 2
+            },
+            end: {
+                line: 1,
+                column: 4
+            }
+        }
+    };
+
+    let { loc: { start }} = node8;
+
+    console.log("내부의 start객체를 받음");
+    console.dir(start);
+
+
+
+
+    // 중첩 객체 디스트러처링하는데 할당 변수 이름 바꾸기
+    let node9 = {
+        type: "Identifier",
+        name: "foo",
+        loc: {
+            start: {
+                line: 9,
+                column: 9,
+                localStart2 : {
+                    good: "good ggg"
+                }
+            },
+            end: {
+                line: 1,
+                column: 4
+            }
+        }
+    };
+
+    // extract node.loc.start
+    let { loc: { start: localStart }} = node9;
+
+    console.log("내부의 start의 할당 변수명 변경");
+    console.dir(localStart);
+
+    let { loc: { start: {localStart2} }} = node9;
+    console.log("이 방법은 start안의 localStart2를 찾는거임", localStart2);
+
+
+
+    // 가챠 문법
+    let { loc: { start: {} }} = node9; // 아무것도 없다! 에러는 아니지만 아무것도 할당 받지 못한다.
+
+
+</script>
+</body>
+</html>
