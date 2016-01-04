@@ -8,6 +8,7 @@
 <script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
 <script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
 <script type="module">
+// https://leanpub.com/understandinges6/read
 // http://www.es6fiddle.net/
 
     function PersonType(name) {
@@ -87,6 +88,124 @@
     let person3 = new PersonType3("gogo");
 
     console.dir(person3);
+
+
+
+
+
+
+
+    console.log("==== 자기자신 내에선 상수화된 클래스 이름 ====");
+    class Foo {
+       constructor() {
+           //Foo = "bar";    // throws an error when executed
+       }
+    }
+
+    let classObj = new Foo();
+
+    // but this is okay
+    Foo = "baz";
+
+    let value = Foo;
+
+    console.dir(classObj);
+    console.log(value);
+
+
+
+
+
+
+
+
+    console.log("==== 변수로 익명(?) 클래스 만들기 ====");
+    let PersonClass2 = class {
+
+        // equivalent of the PersonType constructor
+        constructor(name) {
+            this.name = name;
+        }
+
+        // equivalent of PersonType.prototype.sayName
+        sayName() {
+            console.log(this.name);
+        }
+    };
+
+    let person = new PersonClass2("Nicholas222");
+    person.sayName();   // outputs "Nicholas222"
+
+    console.log(person instanceof PersonClass2);     // true
+    console.log(person instanceof Object);          // true
+
+    console.log(typeof PersonClass2);                    // "function"
+    console.log(typeof PersonClass2.prototype.sayName);  // "function"
+
+
+
+
+
+
+    console.log("==== 기명, 익명 썪으면? ====");
+    let PersonClass4 = class PersonClass3 {
+
+        // equivalent of the PersonType constructor
+        constructor(name) {
+            this.name = name;
+        }
+
+        // equivalent of PersonType.prototype.sayName
+        sayName() {
+            console.log(this.name);
+        }
+    };
+
+    console.log(PersonClass4 === PersonClass3);  // true(이상함.,. PersonClass3은 정의되지 않았다고 하는데;;)
+    let person3 = new PersonClass3();
+    let person4 = new PersonClass4();
+    console.dir(person3);
+    console.dir(person4); // 로그에는 PersonClass3으로 나온다 -_-;
+
+
+
+
+
+
+    console.log("==== 익명 함수 만들기??? ====");
+    function createObject(classDef) {
+        return new classDef();
+    }
+
+    let obj = createObject(class {
+
+        sayHi() {
+            console.log("Hi!");
+        }
+    });
+
+    obj.sayHi();        // "Hi!"
+    console.log(obj.name); //undefined(사실 함수는  name이 있는데 class에는 없는듯.. 다른 클래스도 안나옴)
+    console.dir(obj);
+
+
+
+
+
+    console.log("==== 즉시 실행 클래스? ====");
+    let person6 = new class {
+
+        constructor(name) {
+            this.name = name;
+        }
+
+        sayName() {
+            console.log(this.name);
+        }
+
+    }("Nicholas666");
+
+    person6.sayName();       // "Nicholas"
 </script>
 </body>
 </html>
