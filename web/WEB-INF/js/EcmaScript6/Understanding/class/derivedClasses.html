@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    console.log("==== ECMA5 Script ====");
+    function Rectangle(length, width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    Rectangle.prototype.getArea = function() {
+        return this.length * this.width;
+    };
+
+    // 자식 클래스로 만들 예정
+    function Square(length) {
+        Rectangle.call(this, length, length); // 부모 사각형의 생성자 호출
+    }
+
+    Square.prototype = Object.create(Rectangle.prototype, { // 부모 프로토타입 상속
+        constructor: {
+            value:Square, // 자식 생성자 함수로 위 함수 추가
+            enumerable: true,
+            writable: true,
+            configurable: true
+        }
+    });
+
+    var square = new Square(3);
+
+    console.log(square.getArea());              // 9
+    console.log(square instanceof Square);      // true
+    console.log(square instanceof Rectangle);   // true
+
+
+
+
+
+
+
+    console.log("==== extends keyword ====");
+    class Rectangle2 {
+        constructor(length, width) {
+            this.length = length;
+            this.width = width;
+        }
+
+        getArea() {
+            console.log(this.length, this.width);
+            return this.length * this.width;
+        }
+    }
+
+    class Square2 extends Rectangle2 {
+        constructor(length) {
+
+            // same as Rectangle.call(this, length, length)
+            super(length, length);
+        }
+    }
+
+    var square2 = new Square2(3);
+
+    console.log(square2.getArea());              // 9
+    console.log(square2 instanceof Square2);      // true
+    console.log(square2 instanceof Rectangle2);   // true
+
+
+
+
+
+
+    console.log("==== 하위 클래스가 constructor를 선언안하면? 자동으로 부모 생성자 호출 ====");
+    class Square3 extends Rectangle2 {
+        // no constructor
+    }
+
+    // Is equivalent to
+    class Square4 extends Rectangle2 {
+        constructor(...args) {
+            super(...args);
+        }
+    }
+
+    var square3 = new Square3(4);
+    var square4 = new Square4(6);
+    console.dir(square3);
+    console.log(square3.getArea()); //Nan왜? ...으로 전달되니 width는 모를수 밖에 ㅎㅎ?!;
+    console.dir(square4);
+    console.log(square4.getArea());
+
+    var square5 = new Square3(5, 5);
+    var square6 = new Square4(1, 1);
+    console.log(square5.getArea()); // 25
+    console.log(square6.getArea()); // 1
+
+
+
+
+
+
+    console.log("==== 오버라이드 =====");
+    class Square7 extends Rectangle2 {
+        constructor(length) {
+            super(length, length);
+        }
+
+        // override and shadow Rectangle.prototype.getArea(), 그냥 함수 받은것
+        getArea() {
+            return this.length * this.length * -1;
+        }
+    }
+
+    var square7 = new Square7(6);
+    var rectangle7 = new Rectangle2(6, 6);
+
+    console.log(square7.getArea(), rectangle7.getArea());
+
+
+    class Square8 extends Rectangle2 {
+        constructor(length) {
+            super(length, length);
+        }
+
+        // override, shadow, and call Rectangle.prototype.getArea()
+        getArea() {
+            return super.getArea(); // 함수를 받지 않고 call 해서 원본 그대로 호출
+        }
+    }
+
+
+
+
+
+
+
+
+
+    let methodName = "getArea";
+    class Square9 extends Rectangle2 {
+        constructor(length) {
+            super(length, length);
+        }
+
+        // override, shadow, and call Rectangle.prototype.getArea()
+        [methodName]() {
+            return super.getArea();
+        }
+    }
+
+
+
+
+
+
+
+
+    console.log("==== static method ====");
+    class Rectangle3 {
+        constructor(length, width) {
+            this.length = length;
+            this.width = width;
+        }
+
+        getArea() {
+            return this.length * this.width;
+        }
+
+        static create(length, width) {
+            return new Rectangle3(length, width);
+        }
+    }
+
+    class Square10 extends Rectangle3 {
+        constructor(length) {
+
+            // same as Rectangle.call(this, length, length)
+            super(length, length);
+        }
+    }
+
+    var rect = Square10.create(3, 4);
+
+    console.log(rect instanceof Rectangle3);     // true
+    console.log(rect.getArea());                // 12
+    console.log(rect instanceof Square10);        // false
+
+
+
+
+
+
+
+    console.log("==== prototype chaining ====");
+    function Rectangle4(length, width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    Rectangle4.prototype.getArea = function() {
+        return this.length * this.width;
+    };
+
+    class Square11 extends Rectangle4 {
+        constructor(length) {
+            super(length, length);
+        }
+    }
+
+    var x = new Square11(3);
+    console.log(x.getArea());               // 9
+    console.log(x instanceof Rectangle4);    // true
+
+
+
+
+
+
+
+
+    console.log("=== ?? 함수호출로 상속;; ===");
+    function Rectangle5(length, width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    Rectangle5.prototype.getArea = function() {
+        return this.length * this.width;
+    };
+
+    function getBase() {
+        return Rectangle5;
+    }
+
+    class Square12 extends getBase() {
+        constructor(length) {
+            super(length, length);
+        }
+    }
+
+    var a = new Square12(3);
+    console.log(a.getArea());               // 9
+    console.log(a instanceof Rectangle);    // true
+</script>
+</body>
+</html>

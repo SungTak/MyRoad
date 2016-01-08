@@ -203,6 +203,39 @@
     let { loc: { start: {} }} = node9; // 아무것도 없다! 에러는 아니지만 아무것도 할당 받지 못한다.
 
 
+
+
+
+
+
+
+
+    /////
+
+    let node9 = {
+        type: "Identifier",
+        name: "foo",
+        loc: {
+            start: {
+                line: 9,
+                column: 9,
+                localStart2 : {
+                    good: "good ggg"
+                }
+            },
+            end: {
+                line: 1,
+                column: 4
+            }
+        }
+    };
+
+
+let { loc, loc:{start}} = node9;
+console.log(loc);
+console.log(start);
+
+
 </script>
 </body>
 </html>

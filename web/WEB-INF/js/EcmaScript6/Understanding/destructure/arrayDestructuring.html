@@ -65,6 +65,7 @@
     console.log("스와핑 전", a2, b2); //12, 22
 
     [ a2, b2 ] = [ b2, a2 ];
+   // console.log("testarr", testArr);
 
     console.log("스와핑 후", a2, b2); //22, 12
 
@@ -73,7 +74,12 @@
     let vNull = null,
         vUndefined = undefined
 
-    // [ vNull, vUndefined ] = [ vUndefined, vNull ]; //에러가 납니다.
+       // var nullArr = [ undefined, undefined];
+       // [a2, b2] = nullArr;
+       // console.log(a2, b2);
+
+// [ vNull, vUndefined ] = [ undefined , null ];
+   //  [ vNull, vUndefined ] = [ vUndefined, vNull ]; //에러가 납니다.
 
 
 
@@ -110,9 +116,10 @@
     // cloning an array in ECMAScript 5
     var colors5 = [ "red", "green", "blue" ];
     var clonedColors = colors5.concat();
+    clonedColors[0] = "black";
 
+    console.dir(colors5);
     console.dir(clonedColors);      //"[red,green,blue]"
-
 
 
 
@@ -121,7 +128,10 @@
     // cloning an array in ECMAScript 6
     let colors6 = [ "red", "green", "blue" ];
     let [ ...clonedColors2 ] = colors6;
+    clonedColors2[0] = "black";
 
+console.log("aaaaaa");
+    console.dir(colors6);
     console.dir(clonedColors2);      //"[red,green,blue]"
 
 

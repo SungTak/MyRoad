@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    class Rectangle {
+        constructor(length, width) {
+            console.log(new.target === Rectangle);
+            this.length = length;
+            this.width = width;
+        }
+    }
+
+    class Square extends Rectangle {
+        constructor(length) {
+            super(length, length)
+        }
+    }
+
+
+    // new.target is Rectangle
+    var obj = new Rectangle(3, 4);      // outputs true
+
+    // new.target is Square
+    var child = new Square(3);      // outputs false
+
+
+
+
+
+    console.log("=== 방어, 부모 클래스로 생성 금지 ===");
+    // abstract base class, 추상화
+    class Shape {
+        constructor() {
+            if (new.target === Shape) {
+                throw new Error("This class cannot be instantiated directly.")
+            }
+        }
+    }
+
+    class Rectangle extends Shape {
+        constructor(length, width) {
+            super();
+            this.length = length;
+            this.width = width;
+        }
+    }
+
+    var x = new Shape();                // throws error
+    var y = new Rectangle(3, 4);        // no error
+    console.log(y instanceof Shape);    // true
+
+</script>
+</body>
+</html>
