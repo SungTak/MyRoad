@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    var colors = ["red", "green", "blue"];
+
+    // len < 때문에 에러남
+    for (var i=0, len = colors.length; i < len; i++) {
+        console.log(colors[i]);
+    }
+
+
+
+
+    console.log("=== 직접 iterator를 만들자 ===");
+    function createIterator(items) {
+
+        var i = 0;
+
+        return {
+            next: function() {
+
+                var done = (i >= items.length);
+                var value = !done ? items[i++] : undefined;  // 즉 전달된 배열의 길이 내에선 데이터를 꺼내고 아니면 완료되었다고 판단함
+
+                return {
+                    done: done,
+                    value: value
+                };
+
+            }
+        };
+    }
+
+    var iterator = createIterator([1, 2, 3]);
+
+    console.log(iterator.next());           // "{ value: 1, done: false }"
+    console.log(iterator.next());           // "{ value: 2, done: false }"
+    console.log(iterator.next());           // "{ value: 3, done: false }"
+    console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+    // for all further calls
+    console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+    console.log("=== 실제 이터레이터를 만들긴 어렵다. 그래서 제네레이터를 쓴다. ===");
+    // 제네레이터는 이터레이터를 리턴하는 특별한 함수다.
+    // 함수 뒤에 아스타를 넣는다.(띄워서)
+    // yield키워드는 제네레이터 내부에서 쓰인다. 이터레이터의 값으로  next()로 부를수 있다.
+    // generator
+    function *createIterator2() {
+        yield 1;
+        yield 2;
+        yield 3;
+    }
+
+    // generators are called like regular functions but return an iterator(오오,,,글쿤..)
+    let iterator2 = createIterator2();
+
+    console.log(iterator2.next().value);     // 1
+    console.log(iterator2.next().value);     // 2
+    console.log(iterator2.next().value);     // 3
+
+
+
+
+
+
+    console.log("=== 응용해보아요 ===");
+    function *createIterator3(items) {
+        for (let i=0; i < items.length; i++) {
+            yield items[i];
+        }
+    }
+
+    let iterator3 = createIterator3([12, 22, 32]);
+
+    console.log(iterator3.next());           // "{ value: 1, done: false }"
+    console.log(iterator3.next());           // "{ value: 2, done: false }"
+    console.log(iterator3.next());           // "{ value: 3, done: false }"
+    console.log(iterator3.next());           // "{ value: undefined, done: true }"
+
+    // for all further calls
+    console.log(iterator3.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+    console.log("=== 익명 제네레이터도 됨 ===");
+    let createIterator4 = function *(items) {
+        for (let i=0; i < items.length; i++) {
+            yield items[i];
+        }
+    };
+
+    let iterator4 = createIterator4([144, 244, 344]);
+
+    console.log(iterator4.next());           // "{ value: 1, done: false }"
+    console.log(iterator4.next());           // "{ value: 2, done: false }"
+    console.log(iterator4.next());           // "{ value: 3, done: false }"
+    console.log(iterator4.next());           // "{ value: undefined, done: true }"
+
+    // for all further calls
+    console.log(iterator4.next());           // "{ value: undefined, done: true }"
+</script>
+</body>
+</html>
