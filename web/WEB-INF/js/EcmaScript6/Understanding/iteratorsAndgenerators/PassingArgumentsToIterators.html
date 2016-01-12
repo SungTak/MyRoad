@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    function *createIterator() {
+        let first = yield 1;
+        let second = yield first + 2;       // 4 + 2
+        yield second + 3;                   // 5 + 3
+    }
+
+    let iterator = createIterator();
+
+    console.log(iterator.next());           // "{ value: 1, done: false }"
+    console.log(iterator.next(4));          // "{ value: 6, done: false }"
+    console.log(iterator.next(5));          // "{ value: 8, done: false }"
+    console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+
+
+
+    console.log("=== throw ===");
+    function *createIterator2() {
+        let first = yield 1;
+        let second = yield first + 2;       // yield 4 + 2, then throw
+        yield second + 3;                   // never is executed
+    }
+
+    let iterator2 = createIterator2();
+
+    console.log(iterator2.next());                   // "{ value: 1, done: false }"
+    console.log(iterator2.next());                  // "{ value: 3이 아니다! NaN, done: false }"
+    //console.log(iterator2.throw(new Error("Boom"))); // error thrown from generator
+
+
+
+
+
+    console.log("=== throw ~ catch ===");
+    function *createIterator3() {
+        let first = yield 1;
+        let second;
+
+        try {
+            second = yield first + 2;       // yield 4 + 2, then throw
+        } catch (ex) {
+            second = 6;                     // on error, assign a different value
+        }
+        yield second + 3;
+    }
+
+    let iterator3 = createIterator3();
+
+    console.log(iterator3.next());                   // "{ value: 1, done: false }"
+    console.log(iterator3.next(4));                  // "{ value: 6, done: false }"
+    console.log(iterator3.throw(new Error("Boom"))); // "{ value: 9, done: false }"
+    console.log(iterator3.next());            // "{ value: undefined, done: true }"
+
+
+
+
+
+
+
+    console.log("=== yield and return ===");
+    function *createIterator4() {
+        yield 1;
+        return;
+        yield 2;
+        yield 3;
+    }
+
+    let iterator4 = createIterator4();
+
+    console.log(iterator4.next());           // "{ value: 1, done: false }"
+    console.log(iterator4.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+    function *createIterator5() {
+        yield 1;
+        return 42;
+    }
+
+    let iterator5 = createIterator5();
+
+    console.log(iterator5.next());           // "{ value: 1, done: false }"
+    console.log(iterator5.next());           // "{ value: 42, done: true }"
+    console.log(iterator5.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+    console.log("=== how?? ===");
+    function *createIterator6() {
+        let first = yield 1;
+        let second = yield 5 + 2;       // 5 + 2
+        yield second + 3;                   // 5 + 3
+    }
+
+    let iterator6 = createIterator6();
+
+    console.log(iterator6.next());           // "{ value: 1, done: false }"
+    let saveData = iterator6.next();
+    console.log(saveData);          // "{ value: 7, done: false }"
+    console.log(iterator6.next(saveData.value));          // "{ value: 10, done: false }"
+    console.log(iterator6.next());           // "{ value: undefined, done: true }"
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    let set = new Set([1, 2, 3, 3, 3, 4, 5]),
+        array = [...set];
+
+    console.log(array);             // [1,2,3,4,5]
+
+
+
+
+
+    console.log("=== map ===");
+    let map = new Map([ ["name", "Nicholas"], ["age", 25]]),
+        array2 = [...map];
+
+    console.log(array2);         // [ ["name", "Nicholas"], ["age", 25]]
+
+
+
+
+    console.log("=== concat arr ===");
+    let smallNumbers = [1, 2, 3],
+    bigNumbers = [100, 101, 102],
+    allNumbers = [0, ...smallNumbers, ...bigNumbers];
+
+    console.log(allNumbers.length);     // 7
+    console.log(allNumbers);    // [0, 1, 2, 3, 100, 101, 102]
+
+
+
+
+
+</script>
+</body>
+</html>
