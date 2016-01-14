@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    var o = {
+
+        createIterator: function *(items) {
+            for (let i=0; i < items.length; i++) {
+                yield items[i];
+            }
+        }
+    };
+
+    let iterator = o.createIterator([1, 2, 3]);
+
+    console.log(iterator.next());           // "{ value: 1, done: false }"
+    console.log(iterator.next());           // "{ value: 2, done: false }"
+    console.log(iterator.next());           // "{ value: 3, done: false }"
+    console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+    // for all further calls
+    console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+    console.log("=== Ecma 6 syntax ===");
+    var o2 = {
+
+        *createIterator(items) {
+            for (let i=0; i < items.length; i++) {
+                yield items[i];
+            }
+        }
+    };
+
+    let iterator2 = o2.createIterator([12, 22, 32]);
+
+    console.log(iterator2.next());           // "{ value: 12, done: false }"
+    console.log(iterator2.next());           // "{ value: 22, done: false }"
+    console.log(iterator2.next());           // "{ value: 32, done: false }"
+    console.log(iterator2.next());           // "{ value: undefined, done: true }"
+
+    // for all further calls
+    console.log(iterator2.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+    // 내부적으로 이터레이터를 쓴당
+    console.log("=== for ~ of ====");
+    let values = [1, 2, 3];
+
+    for (let num of values) {
+        console.log(num);
+    }
+
+
+
+
+    console.log("=== 기본 이터레이터 쓰기, 심볼 이용 ===");
+    let values3 = [1, 2, 3];
+    let iterator3 = values3[Symbol.iterator]();
+
+    console.log(iterator3.next());           // "{ value: 1, done: false }"
+    console.log(iterator3.next());           // "{ value: 2, done: false }"
+    console.log(iterator3.next());           // "{ value: 3, done: false }"
+    console.log(iterator3.next());           // "{ value: undefined, done: true }"
+
+
+
+
+    console.log("=== 심볼을 이용해 디폴트 이터레이터를 알 수 있다!===");
+    function isIterable(object) {
+        return typeof object[Symbol.iterator] === "function";
+    }
+
+    console.log(isIterable([1, 2, 3]));     // true
+    console.log(isIterable("Hello"));       // true
+    console.log(isIterable(new Map()));     // true
+    console.log(isIterable(new Set()));     // true
+    console.log(isIterable(new WeakMap())); // false
+    console.log(isIterable(new WeakSet())); // false
+
+
+
+
+
+    console.log("=== 심볼과 제네레이터를 이용해 개발자가 만든 클래스도 이터레이터화 ===");
+    let collection4 = {
+        items: [],
+        *[Symbol.iterator]() {
+            for (let item of this.items) {
+                yield item;
+            }
+        }
+
+    };
+
+    collection4.items.push(144);
+    collection4.items.push(244);
+    collection4.items.push(344);
+
+    for (let x of collection4) {
+        console.log(x);
+    }
+
+    // Output:
+    // 1
+    // 2
+    // 3
+
+</script>
+</body>
+</html>

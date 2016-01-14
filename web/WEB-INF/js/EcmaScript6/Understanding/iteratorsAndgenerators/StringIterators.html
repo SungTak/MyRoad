@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="root">
+    <div id="branch">
+        <div id="leaf">
+
+        </div>
+        <div id="leaves">
+
+        </div>
+    </div>
+    <div id="branches">
+
+    </div>
+</div>
+
+
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    var message = "A ð ®· B";
+
+    for (let i=0; i < message.length; i++) {
+        console.log(message[i]);
+    }
+
+
+
+
+    console.log("=== of ===");
+    var message2 = "A ð ®· B";
+
+    for (let c of message2) {
+        console.log(c);
+    }
+
+
+
+
+    console.log("=== nodeList ==="); // 안됨.. 리턴 객체가symbol.iterator가 없다함..
+    var divs = document.getElementsByTagName("div");
+    console.dir(divs);
+
+    for (let div of divs) {
+        console.log(div.id);
+    }
+</script>
+</body>
+</html>

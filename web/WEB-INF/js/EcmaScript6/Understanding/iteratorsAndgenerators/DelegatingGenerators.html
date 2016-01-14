@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    function *createNumberIterator() {
+        yield 1;
+        yield 2;
+    }
+
+    function *createColorIterator() {
+        yield "red";
+        yield "green";
+    }
+
+    function *createCombinedIterator() {
+        yield *createNumberIterator();
+        yield *createColorIterator();
+        yield true;
+    }
+
+    var iterator = createCombinedIterator();
+
+    console.log(iterator.next());           // "{ value: 1, done: false }"
+    console.log(iterator.next());           // "{ value: 2, done: false }"
+    console.log(iterator.next());           // "{ value: "red", done: false }"
+    console.log(iterator.next());           // "{ value: "green", done: false }"
+    console.log(iterator.next());           // "{ value: true, done: false }"
+    console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+
+
+
+
+
+
+    console.log("=== return ===");
+    function *createNumberIterator2() {
+        yield 1;
+        yield 2;
+        return 3;
+        //yield 3; // 전달되지 않아서 all undefined;이녀석만 6번 수행되나?!
+    }
+
+    function *createRepeatingIterator2(count) {
+        for (let i=0; i < count; i++) {
+            yield "repeat";
+        }
+    }
+
+    function *createCombinedIterator2() {
+        let result = yield *createNumberIterator2();
+        yield *createRepeatingIterator2(result);
+    }
+
+    var iterator2 = createCombinedIterator2();
+
+    console.log(iterator2.next());           // "{ value: 1, done: false }"
+    console.log(iterator2.next());           // "{ value: 2, done: false }"
+    console.log(iterator2.next());           // "{ value: "repeat", done: false }" //3번 도는데 3은 안나옴요
+    console.log(iterator2.next());           // "{ value: "repeat", done: false }"
+    console.log(iterator2.next());           // "{ value: "repeat", done: false }"
+    console.log(iterator2.next());           // "{ value: undefined, done: true }"
+
+    var numberIterator = createNumberIterator2();
+    console.log(numberIterator.next()); //1
+    console.log(numberIterator.next()); //2
+    console.log(numberIterator.next()); //3
+    console.log(numberIterator.next()); //undefined
+
+
+
+
+
+
+
+    console.log("=== add yield ===");
+    function *createNumberIterator3() {
+        yield 1;
+        yield 2;
+        return 3;
+    }
+
+    function *createRepeatingIterator3(count) {
+        for (let i=0; i < count; i++) {
+            yield "repeat";
+        }
+    }
+
+    function *createCombinedIterator3() {
+        let result = yield *createNumberIterator3();
+        yield result;
+        yield *createRepeatingIterator3(result);
+    }
+
+    var iterator3 = createCombinedIterator3();
+
+    console.log(iterator3.next());           // "{ value: 1, done: false }"
+    console.log(iterator3.next());           // "{ value: 2, done: false }"
+    console.log(iterator3.next());           // "{ value: 3, done: false }"
+    console.log(iterator3.next());           // "{ value: "repeat", done: false }"
+    console.log(iterator3.next());           // "{ value: "repeat", done: false }"
+    console.log(iterator3.next());           // "{ value: "repeat", done: false }"
+    console.log(iterator3.next());           // "{ value: undefined, done: true }"
+</script>
+</body>
+</html>

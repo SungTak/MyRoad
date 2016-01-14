@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+//entries() - returns an iterator whose values are a key-value pair.
+//values() - returns an iterator whose values are the values of the collection.
+//keys() - returns an iterator whose values are the keys contained in the collection.
+
+    let colors = [ "red", "green", "blue" ];
+    let tracking = new Set([1234, 5678, 9012]);
+    let data = new Map();
+
+    data.set("title", "Understanding ECMAScript 6");
+    data.set("format", "ebook");
+
+    for (let entry of colors.entries()) {
+        console.log(entry);
+    }
+
+    for (let entry of tracking.entries()) {
+        console.log(entry);
+    }
+
+    for (let entry of data.entries()) {
+        console.log(entry);
+    }
+
+
+
+
+
+
+    console.log("=== values ===");
+    let colors2 = [ "red", "green", "blue" ];
+    let tracking2 = new Set([1234, 5678, 9012]);
+    let data2 = new Map();
+
+    data2.set("title", "Understanding ECMAScript 6");
+    data2.set("format", "ebook");
+
+    for (let value of colors2.values()) {
+        console.log(value);
+    }
+
+    for (let value of tracking2.values()) {
+        console.log(value);
+    }
+
+    for (let value of data2.values()) {
+        console.log(value);
+    }
+
+
+
+
+
+
+    console.log("=== keys ===");
+    let colors3 = [ "red", "green", "blue" ];
+    let tracking3 = new Set([1234, 5678, 9012]);
+    let data3 = new Map();
+
+    data3.set("title", "Understanding ECMAScript 6");
+    data3.set("format", "ebook");
+
+    for (let key of colors3.keys()) {
+        console.log(key);
+    }
+
+    for (let key of tracking3.keys()) {
+        console.log(key);
+    }
+
+    for (let key of data3.keys()) {
+        console.log(key);
+    }
+
+
+
+
+
+
+
+    console.log("=== default is values ===");
+    let colors4 = [ "red", "green", "blue" ];
+    let tracking4 = new Set([1234, 5678, 9012]);
+    let data4 = new Map();
+
+    data4.set("title", "Understanding ECMAScript 6");
+    data4.set("format", "ebook");
+
+    // same as using colors.values()
+    for (let value of colors4) {
+        console.log(value);
+    }
+
+    // same as using tracking.values()
+    for (let num of tracking4) {
+        console.log(num);
+    }
+
+    // same as using data.entries()
+    for (let entry of data4) {
+        console.log(entry);
+    }
+
+</script>
+</body>
+</html>

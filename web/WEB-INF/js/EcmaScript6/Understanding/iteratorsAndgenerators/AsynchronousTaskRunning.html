@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    function run(taskDef) {
+
+        // create the iterator, make available elsewhere
+        let task = taskDef(); // 이터레이터 형태로 리턴해줌
+
+        // start the task
+        let result = task.next(); // 첫 수행할 것 가져옴
+
+        // recursive function to keep calling next()
+        function step() {
+
+            // if there's more to do
+            if (!result.done) {  // 이터레이터 다 돌때까지 고고
+                result = task.next(); // 담 작업 고
+                step();
+            }
+        }
+
+        // start the process
+        step(); // 맨 첫 수행 고고
+
+    }
+
+
+
+    // 익명 제네레이터
+    run(function*() {
+        console.log(1);
+        yield;
+        console.log(2);
+        yield;
+        console.log(3);
+    });
+
+
+
+
+
+
+    console.log("=== 인자값 받기 ===");
+    function run2(taskDef) {
+
+        // create the iterator, make available elsewhere
+        let task = taskDef();
+
+        // start the task
+        let result = task.next();
+
+        // recursive function to keep calling next()
+        function step() {
+
+            // if there's more to do
+            if (!result.done) {
+                result = task.next(result.value);
+                step();
+            }
+        }
+
+        // start the process
+        step();
+
+    }
+
+
+    run2(function*() {
+        let value = yield 1;
+        console.log(value);         // 1
+
+        value = yield value + 3;
+        console.log(value);         // 4
+    });
+
+
+
+
+    console.log("=== fetchData ===");
+    function run(taskDef) {
+
+        // create the iterator, make available elsewhere
+        let task = taskDef();
+
+        // start the task
+        let result = task.next();    // 1. 1번째 가져옴
+
+        // recursive function to keep calling next()
+        function step() {
+
+            // if there's more to do
+            if (!result.done) {  // 3. 끝났는지 체크
+                if (typeof result.value === "function") {  // 가져온 값이 함수면
+                    result.value(function(err, data) {  // 함수의 인자 값으로 또 다른 함수를 전달
+                        if (err) {
+                            result = task.throw(err);
+                            return;
+                        }
+
+                        result = task.next(data);
+                        step();
+                    });
+                } else {
+                    result = task.next(result.value);  // 데이터면 그냥 다음 데이터에 쓰라고 전달함
+                    step();
+                }
+
+            }
+        }
+
+        // start the process
+        step(); // 2. 수행
+
+    }
+</script>
+</body>
+</html>
