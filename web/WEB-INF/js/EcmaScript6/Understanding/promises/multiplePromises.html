@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<!-- https://leanpub.com/understandinges6/read -->
+<script type="module">
+
+    console.log("==== promises all ====");
+    let p1 = new Promise(function(resolve, reject) {
+        resolve(42);
+    });
+
+    let p2 = new Promise(function(resolve, reject) {
+        resolve(43);
+    });
+
+    let p3 = new Promise(function(resolve, reject) {
+        resolve(44);
+    });
+
+    let p4 = Promise.all([p1, p2, p3]);
+
+    p4.then(function(value) {
+        console.log(value);     // [42, 43, 44]
+    });
+
+
+
+
+    console.log("=== resolve, reject ===");
+    let p5 = new Promise(function(resolve, reject) {
+        resolve(455);
+    });
+
+    let p6 = new Promise(function(resolve, reject) {
+        //resolve(466); 1개라도 실패하면 무조건 reject임
+        reject(466);
+    });
+
+    let p7 = new Promise(function(resolve, reject) {
+        resolve(477);
+    });
+
+    let p8 = Promise.all([p5, p6, p7]);
+
+///*
+//    p8.then(function(value) {  // 먼저 선언해도 실패하면 무조건 reject
+//        console.log("success", value);
+//    });
+    p8.catch(function(value) {
+        console.log(value);     // 466
+    });
+//*/
+
+/*
+    p8.then(function(value) {
+        console.log("success", value);
+    }, function(value) {
+        console.log("fail", value);
+    });
+*/
+
+
+
+
+
+
+
+
+    console.log("==== promises race ===="); // 하나라도 먼저 끝나면  만족한다고 판단하는 메서드
+    let p9 = Promise.resolve(99);
+
+    let p10 = new Promise(function(resolve, reject) {
+        resolve(100);
+    });
+
+    let p11 = new Promise(function(resolve, reject) {
+        resolve(111);
+    });
+
+    //let p12 = Promise.race([p9, p10, p11]); // 99
+    //let p12 = Promise.race([p10, p11, p9]); // 100
+    let p12 = Promise.race([p11, p10, p9]); // 111 // 먼저 큐에 들어간 애만 나온다.
+
+    p12.then(function(value) {
+        console.log(value);
+    });
+
+
+
+    console.log("=== 하지만.. reject이 하나라도 있으면 모두 reject처리됨 ===");
+    let p13 = new Promise(function(resolve, reject) {
+        resolve(1313);
+    });
+
+    let p14 = Promise.reject(1414);
+
+    let p15 = new Promise(function(resolve, reject) {
+        resolve(1515);
+    });
+
+    let p16 = Promise.race([p13, p14, p15]);   // 1313
+    //let p16 = Promise.race([p14, p13, p15]); // 1414
+
+    p16.then(function(value) {
+        console.log("success test", value); //?? 여기에 온다.. 13이 온다귶...;; 먼저온 프로미스가 오면 그냥 끝인?
+    }, function() {
+        console.log("fail test");
+    });
+
+
+    p16.catch(function(value) {
+        console.log(value);     // 1414
+    });
+
+
+
+
+    console.log("=== 모두 reject이면???? ===");
+    let p17 = new Promise(function(resolve, reject) {
+        reject(-1700);
+    });
+
+    let p18 = Promise.reject(-1800);
+
+    let p19 = new Promise(function(resolve, reject) {
+        reject(-1900);
+    });
+
+    let p20 = Promise.race([p17, p18, p19]); // -1700
+    //let p20 = Promise.race([p18, p17, p19]); // -1800
+    //let p20 = Promise.race([p19, p18, p17]); // -1900
+
+    p20.catch(function(value) {
+        console.log(value);     // -1700
+    });
+
+
+</script>
+</body>
+</html>
