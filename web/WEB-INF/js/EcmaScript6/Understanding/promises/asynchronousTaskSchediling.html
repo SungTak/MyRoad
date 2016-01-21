@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    // nodeJs가 없어서 임시로 테스트 mock 만듦
+    var fs = {
+        "readFile" : function(fileName, callback) {
+            callback(false, fileName);
+        }
+    }
+
+
+
+    console.log("==== Generators ====");
+
+    let task;
+
+    function readConfigFile() {
+        fs.readFile("config.json", function(err, contents) {
+            if (err) {
+                task.throw(err);
+            } else {
+                console.log(contents);
+               // task.next(contents); // 아직 readConfigFile이 끝나지 않아서 실제로 돌릴수없다 -_-
+            }
+        });
+    }
+
+    function *init() {
+        let contents = yield readConfigFile();
+        console.log("Done");
+    }
+
+    task = init(); // iterator로 리턴
+    task.next(); //yield까지 수행 -> 내부 next로 또 수행하고 끝
+    task.next();
+
+
+
+
+
+
+    function run(taskDef) {
+
+        // create the iterator
+        let task = taskDef();
+
+        // start the task
+        let result = task.next();
+
+        // recursive function to iterate through
+        (function step() {
+
+            // if there's more to do
+            if (!result.done) {
+
+                // resolve to a promise to make it easy
+                let promise = Promise.resolve(result.value);
+                promise.then(function(value) {  // 성공
+                    console.log(value);
+                    result = task.next(value);
+                    step();
+                }).catch(function(error) { // 실패
+                    result = task.throw(error);
+                    step();
+                });
+            }
+        }());
+    }
+
+    function readConfigFile2() {
+        return new Promise(function(resolve, reject) {
+            fs.readFile("config.json222", function(err, contents) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(contents);
+                }
+            });
+        });
+    }
+
+    run(function *() {
+        let contents = yield readConfigFile2();
+        console.log("Done222");
+    });
+
+</script>
+</body>
+</html>

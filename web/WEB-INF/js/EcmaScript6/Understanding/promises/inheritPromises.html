@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    class MyPromise extends Promise { //브라우저 미지원
+
+        // use default constructor
+
+        success(resolve, reject) {
+            return this.then(resolve, reject);
+        }
+
+        failure(reject) {
+            return this.catch(reject);
+        }
+
+    }
+
+    let promise = new MyPromise(function(resolve, reject) {
+        resolve(42);
+    });
+
+    promise.success(function(value) {
+        console.log(value);             // 42
+    }).failure(function(value) {
+        console.log(value);
+    });
+
+
+
+
+
+
+    let p1 = new Promise(function(resolve, reject) {
+        resolve(4555);
+    });
+
+    let p2 = MyPromise.resolve(p1);
+    p2.success(function(value) {
+        console.log(value);         // 42
+    });
+
+    console.log(p2 instanceof MyPromise);   // true
+</script>
+</body>
+</html>

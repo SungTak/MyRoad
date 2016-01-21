@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<!-- https://leanpub.com/understandinges6/read -->
+<script type="module">
+
+    let promise = Promise.resolve(42);
+
+    promise.then(function(value) {
+        console.log(value);         // 42
+    });
+
+
+
+
+
+    let promise2 = Promise.reject(424);
+
+    promise2.catch(function(value) {
+        console.log(value);         // 424
+    });
+
+
+
+
+    console.log("=== 미리 객체를 만들어 사용 ===");
+    let thenable = {
+        then: function(resolve, reject) {
+            resolve(100);
+        }
+    };
+
+    let p1 = Promise.resolve(thenable);
+    p1.then(function(value) {
+        console.log(value);     // 100
+    });
+
+
+
+
+
+
+    console.log("=== 인자 전달 가능? ===");
+    let thenable2 = {
+        then: function(resolve, reject, value) {
+            resolve(value);
+        }
+    };
+
+    let p2 = Promise.resolve(thenable2);
+    p2.then(function(value) {
+        console.log(value);     // 104 -> undefined
+    }, undefined, 104);
+
+
+
+
+    console.log("=== 인자 전달 가능222? ===");
+    let thenable3 = {
+        setValue : function(value) {
+            this.value = value;
+        },
+        then: function(resolve, reject) {
+            resolve(this.value);
+        }
+    };
+    thenable3.setValue(104);
+
+    let p3 = Promise.resolve(thenable3);
+    p3.then(function(value) {
+        console.log(value);     // 104
+    }, undefined, 104);
+
+
+
+
+    console.log("=== 실패 ===");
+    let thenable4 = {
+        then: function(resolve, reject) {
+            reject(46);
+        }
+    };
+
+    let p4 = Promise.reject(thenable4);
+    p4.catch(function(value) {
+        console.log(value);     // 46 obj로 나옴-_-? 함수 그자체로 나오는 느낌.. 적용이 안됨?
+    });
+    p4.then(undefined, function(value) {
+        console.log(value);     // 46 obj로 나옴??
+    });
+
+
+
+
+
+
+
+
+    console.log("=== ERROR ====");
+    let promise5 = new Promise(function(resolve, reject) {
+        throw new Error("Explosion!");
+    });
+
+    promise5.catch(function(error) {
+        console.log(error.message);     // "Explosion!"
+    });
+
+
+
+
+
+    // equivalent of previous example
+    let promise6 = new Promise(function(resolve, reject) {
+        try {
+            throw new Error("Explosion!");
+        } catch (ex) {
+            ex.message = ex.message + "reject!";
+            reject(ex);
+        }
+    });
+
+    promise6.catch(function(error) {
+        console.log(error.message);     // "Explosion! reject!"
+    });
+
+
+
+
+
+    console.log("==== chaining promises ====");
+    let p7 = new Promise(function(resolve, reject) {
+        resolve(42777);
+    });
+
+    p7.then(function(value) {
+        console.log(value);
+    }).then(function() {
+        console.log("Finished777");  //큐에 제일 늦게 들어가는듯
+    });
+
+
+
+
+
+
+
+    let p8 = new Promise(function(resolve, reject) {
+        resolve(428888);
+    });
+
+    // same as
+
+    let p9 = p8.then(function(value) {
+        console.log(value);
+    })
+
+    p9.then(function() {
+        console.log("Finished9999999");
+    });
+
+
+
+
+
+
+
+
+    console.log("==== catching chaining Error ====");
+    let p10 = new Promise(function(resolve, reject) {
+        resolve(101010101010);
+    });
+
+    p10.then(function(value) {
+        throw new Error("Boom!10101010");
+    }).catch(function(error) {
+        console.log(error.message);     // "Boom!"
+    });
+
+
+
+
+    console.log("=== catch~ catch~~~ ===");
+    let p11 = new Promise(function(resolve, reject) {
+        throw new Error("Explosion!111111111");
+    });
+
+    p11.catch(function(error) {
+        console.log(error.message);     // "Explosion!"
+        throw new Error("Boom!1111111`11``11");
+    }).catch(function(error) {
+        console.log(error.message);     // "Boom!"
+    });
+
+    // reject는 chain의 끝에 반드시 두는걸 권장함, 에러를 잡기위함
+
+
+
+
+
+
+
+
+
+    console.log("=== return chaining ===");
+    let p12 = new Promise(function(resolve, reject) {
+        resolve(4212);
+    });
+
+    p12.then(function(value) {
+        console.log(value);         // "4212"
+        return value + 1;
+    }).then(function(value) {
+        console.log(value);         // "4313"
+    });
+
+
+
+
+
+
+
+
+
+    console.log("=== return promises obj ===");
+    let p13 = new Promise(function(resolve, reject) {
+        resolve(42131313);
+    });
+
+    let p14 = new Promise(function(resolve, reject) {
+        resolve(14141414);
+    });
+
+    p13.then(function(value) {
+        console.log("return promises obj", value);     // 42131313
+        return p14;
+    }).then(function(value) {
+        console.log("return promises obj", value);     // 141414
+    });
+
+
+
+
+
+
+    console.log("=== return reject promises obj ===");
+    let p15 = new Promise(function(resolve, reject) {
+        resolve(1500);
+    });
+
+    let p16 = new Promise(function(resolve, reject) {
+        reject(1600);
+    });
+
+/*
+    p15.then(function(value) {
+        console.log("return reject", value);     // 1500
+        return p16;
+    }).then(function(value) {
+        console.log("return reject", value);     // never called
+    });
+*/
+
+
+/*
+    p15.then(function(value) {
+        console.log("return reject", value);     // 1500
+        return p16;
+    }).then(undefined, function(value) {
+        console.log("return reject", value);     // 1600
+    });
+    */
+
+
+///*
+    p15.then(function(value) {
+        console.log("return reject", value);     // 1500
+        return p16;
+    }).catch(function(value) {
+        console.log("return reject catch", value);     // 1600
+    });
+
+//*/
+
+
+
+
+    console.log("=== nested return promises obj ===");
+    let p17 = new Promise(function(resolve, reject) {
+        resolve(17000);
+    });
+
+    p17.then(function(value) {
+        console.log(value);     // 17000
+
+        // create a new promise
+        let p2 = new Promise(function(resolve, reject) {
+            resolve("EEEEE");
+        });
+
+        return p2
+    }).then(function(value) {
+        console.log(value);     // EEEEE
+    });
+
+
+</script>
+</body>
+</html>
