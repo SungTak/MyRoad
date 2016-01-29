@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    console.log("=== 일반적인 callback ===");
+    function doSome1(cb) {
+        var val = "여기는 doSome1 메세지입니다";
+        cb(val);
+    }
+
+    function show(msg){
+        console.log(msg);
+    }
+
+    //실행
+    doSome1(show);
+
+
+
+
+
+
+
+    console.log("=== callback 세분화 ===");
+    function doSome2() {
+        return {
+            then: function(cb) {
+                var val = "여기는 doSome2 메세지입니다 ";
+                cb(val);
+            }
+        };
+    }
+
+
+    // 실행
+    doSome2().then(function show(msg){
+        console.log(msg);
+    });
+
+
+
+
+
+
+    console.log("=== promise 따라하기 ===");
+try {
+    function Promise1(fn) {
+        var callback = null;
+        this.then = function (cb) {
+            callback = cb;
+        };
+        function resolve(val) {
+            callback(val);
+        }
+
+        fn(resolve);
+    }
+
+
+    // promise 객체 생성 및 resolve세팅
+    function doPromise1() {
+        return new Promise1(function (resolve) {
+            var val = " 여기는 doPromise1 메세지입니다  ";
+            resolve(val);
+        });
+    }
+
+    // 실행 (callback)
+    doPromise1().then(function (val) {
+        console.log('결과메세지: ' + val)
+    });
+} catch (e) {
+    // 실행되지 못하고 에러가 난다.
+    // resolve 시점에 then이 호출되지 않아 callback이 null인 것이다.
+    console.log("에러남요", e);
+}
+
+
+
+
+
+    console.log("=== 위의 내용을 다시 개선 ===");
+    function Promise2(fn){
+        var callback= null;
+        this.then =  function(cb){
+            callback = cb;
+        };
+        function resolve(val){
+            setTimeout(function(){
+                callback(val);
+            }, 1); // resolve시점에 setTimeout 1은 줘서 순간적으로 then이 수행이되어 callback에 function set
+
+        }
+        fn(resolve);
+    }
+    function doPromise2(){
+        return new Promise2(function(resolve){
+            var val = " 여기는 doPromise222 메세지입니다  ";
+            resolve(val);
+        });
+    }
+
+
+    //실행
+    doPromise2().then(function(val) {
+        console.log('결과메세지1: ' + val)
+    });
+
+
+
+
+
+
+
+
+    console.log("=== setTimeout대신 상태 ====");
+    function Promise33(fn){
+        var state = "pending";
+        var value;
+        var deferred;
+
+        function resolve(newVal){
+            value = newVal;
+            state = "resolved";
+            if(deferred){
+                handle(deferred);
+            }
+
+        }
+
+        function handle(onResolved){
+            if(state === 'pending'){
+                deferred = onResolved;
+                return;
+            }
+            onResolved(value);
+        }
+
+        this.then = function(onResolved){
+            handle(onResolved);
+        };
+
+        fn(resolve);
+    }
+
+    function doPromise33(){
+        return new Promise33(function(resolve){
+            var val = " 여기는 doPromise33 메세지입니다  ";
+            resolve(val); //resolve에  value전달, defferd는 null
+        });
+    }
+
+    //실행
+    doPromise33().then(function(val) { // then시점에 handle호출. 이미 앞에서 resolved로 상태 변경, 그대로 수행
+        console.log('결과메세지3: ' + val)
+    });
+
+    // 추가 문제
+    /*
+    var promise3 =  doPromise3();
+    promise3.then(function(val) { console.log('결과메세지1: ' + (val+2))});
+    promise3.then(function(val) { console.log('결과메세지2: ' + (val+4))});
+    promise3.then(function(val) { console.log('결과메세지3: ' + (val+10))});
+*/ // 서버가 느려서 응답이 늦으면 마지막 것만 반영되고 중간의 2, 4는 무시됨
+
+
+
+
+
+
+
+
+    function Promise3(fn){
+        var state = "pending";
+        var value;
+        var deferred = null;
+
+        function resolve(newVal){
+
+            // 인자로 함수가 올수도있음!
+        //    if (newVal && typeof newVal.then === 'function') {
+        //        newVal.then(resolve);
+        //        return;
+        //   }
+
+            value = newVal;
+            state = "resolved";
+            if(deferred){
+                handle(deferred);
+            }
+
+        }
+
+        function handle(handler){ // 2-4. 현재 프로세스상 상태는 resolved, onResolved도 이미 함수 존재
+            if(state === 'pending'){
+                deferred = onResolved;
+                return;
+            }
+            if(handler.onResolved === false){
+                handler.resolve(value);
+                return;
+            }
+            var retVal= handler.onResolved(value); // 2-5. then으로 전달된 함수 수행
+            handler.resolve(retVal); // 2-6. 기존 promise3의 resolve임
+
+        }
+
+        this.then = function(onResolved){
+            return new Promise3(
+                    function(resolve){ // 2-2. onResolve는 외부 인자, resolve는 또 새로운 promise3의 resolve
+                        handle(
+                                {   // 2-3. 핸들러 인자 리터럴 객체
+                                    onResolved:onResolved,
+                                    resolve:resolve
+                                }
+                        );
+                    }
+            );
+
+        };
+        // resolve 메소드를 호출하여 비지니스 결과값을 멤버 변수에 저장해 놓는 역할을 하며 state를  resolved로 변경한다
+        fn(resolve);// 내가 추가 : 1-2. Promise3에 있는 resolve는 생성자로 전달된 함수의 인자로 쓰인다.
+    }
+
+    function doPromise3(){
+        return new Promise3(
+                function(resolve){
+                    // ajaxCall 같은  business logic 수행후 결과값
+                    var val = 5;
+                    resolve(val); // 1-1. 결국 promise3의 resolve에 전달될 val임
+                }
+        );
+    }
+
+    //실행
+    doPromise3().then( // 2-1. then호출
+            function step1(val){
+                return val +2;
+            }
+    ).then(function step2(val){ //3-1. then호출
+                return val + 10;
+            }
+    ).then(function step3(val){ // 4-1 ~
+                return val + 3;
+            }
+    ).then(function sum(val){ // 5 -> 7 -> 17 -> 20
+                console.log("promise33333 sum ="+ val);
+            }
+    );
+
+
+
+    // 만약 return값이 객체라면??
+    doPromise3().then(function(val) {
+        return new Promise3(function(resolve) {
+            val = 100; // 내맘대로 원래 값 바꿈 ㅋ
+            resolve(val);
+        });
+    }).then(function(obj){
+        // 그냥 객체 출력이다.
+        console.log(obj);
+        obj.then(function(val) {
+            console.log("promise3을 리턴함요.", val + 10); //110
+        });
+
+        // obj의 then과 같은 것을 막기 위해 resolve에서 함수형 체크를 한다~.(주석처리되어있음)
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+    console.log("=== ERROR도 대응해야죵 ===");
+    function Promise4(fn){
+        var state = "pending"; // resolved, rejected
+        var value;
+        var deferred =null;
+
+        function resolve(newVal) {
+            if(newVal && typeof newVal.then === 'function') {
+                newVal.then(resolve);
+                return;
+            }
+            value = newVal;
+            state = "resolved";
+            if(deferred){
+                handle(deferred);
+            }
+        }
+
+        // 거부합시다~!
+        function reject(err) {
+            state = "rejected";
+            value = err;
+            if(deferred){
+                handle(deferred);
+            }
+        }
+
+        function handle(handler){
+            if(state === 'pending'){
+                deferred = onResolved;
+                return;
+            }
+            var callback;
+            if(state ==='resolved'){
+                callback = handler.onResolved;
+            }else{
+                callback = handler.onRejected;
+            }
+            if(callback == false){
+                if(state ==='resolved'){
+                    callback = handler.resolve;
+                }else{
+                    callback = handler.reject;
+                }
+                return;
+            }
+            // then(fn)의 fn을 실행하여 리턴된 값을 resolve()호출하여 값을 저장해 놓는다
+            // 다음 then()호출시 리턴해줄 값이다
+            var retVal = callback(value); // reject이든 resolve든 수행후 return되는 값이 있으면 다음 then에 넣어놓음. ㅎㅎ
+            handler.resolve(retVal);
+
+        }
+
+        this.then =  function(onResolved, onRejected){
+            return new Promise4(
+                    function(resolve, reject){
+                        handle(
+                                {
+                                    onResolved:onResolved,
+                                    onRejected:onRejected,
+                                    resolve:resolve,
+                                    reject: reject
+                                }
+                        );
+                    }
+            );
+
+        };
+
+        fn(resolve,reject);// resolve 메소드를 호출하여 비지니스 결과값을 멤버 변수에 저장해 놓는 역할을 하며 state를  resolved로 변경한다
+    }
+
+    function doPromise4(){
+        return new Promise4(
+                function(resolve, reject){ // resolve, reject은 Promise에 구현된 메서드이다.
+                    // ajaxCall 같은  business logic 수행후 결과값
+                    var result = doBusinessAjax();
+                    if(result.error){
+                        reject(result.error)
+                    }else{
+                        resolve(result.value);//
+                    }
+                }
+        );
+    }
+    doPromise4().then(
+            function(val){console.log("성공", val);}
+            ,function(err){console.log("에러 ", err);}
+    );
+
+    function doBusinessAjax(){
+        return {value:5,error:"런타임 에러 발생했음"}
+    }
+
+
+
+
+
+    console.log("=== 명시적인 ERROR말고 Exception도 ===");
+    function Promise5(fn){
+        var state = "pending";
+        var value;
+        var deferred = null;
+        function resolve(newVal){
+            try{ // try ~ catch가 추가되었다~!하지만.. 콜백에서 에러가 났는지는 모름.모르지몰라~
+                if(newVal && typeof newVal.then === 'function') {
+                    newVal.then(resolve);
+                    return;
+                }
+                value = newVal;
+                state = "resolved";
+                if(deferred){
+                    handle(deferred);
+                }
+            }catch(e){
+                reject(e);
+            }
+        }
+        function reject(err){
+            state = "rejected";
+            value = err;
+            if(deferred){
+                handle(deferred);
+            }
+        }
+        function handle(handler){
+            if(state === 'pending'){
+                deferred = onResolved;
+                return;
+            }
+            var callback;
+            if(state ==='resolved'){
+                callback = handler.onResolved;
+            }else{
+                callback = handler.onRejected;
+            }
+            if(callback == false){
+                if(state ==='resolved'){
+                    callback = handler.resolve;
+                }else{
+                    callback = handler.reject;
+                }
+                return;
+            }
+            try{
+                // then(fn)의 fn을 실행하여 리턴된 값을 resolve()호출하여 값을 저장해 놓는다
+                // 다음 then()호출시 리턴해줄 값이다
+                var retVal = callback(value);
+            }catch(e){
+                handler.reject(e);
+                return;
+            }
+            handler.resolve(retVal);
+
+        }
+        this.then =  function(onResolved, onRejected){
+            return new Promise5(
+                    function(resolve, reject){
+                        handle(
+                                {
+                                    onResolved:onResolved,
+                                    onRejected:onRejected,
+                                    resolve:resolve,
+                                    reject: reject
+                                }
+                        );
+                    }
+            );
+
+        };
+        fn(resolve,reject);// resolve 메소드를 호출하여 비지니스 결과값을 멤버 변수에 저장해 놓는 역할을 하며 state를  resolved로 변경한다
+    }
+
+
+    function doPromise5(){
+        return new Promise5(
+                function(resolve,reject){
+                    var result = doBusinessAjax2();
+                    if(result.error){
+                        reject(result.error);
+                    }else{
+                        resolve(result.value);//이 녀석이 수행되겠지 ㅎㅎ 에러가 없으니..
+                    }
+                }
+        );
+    }
+
+    //실행
+    doPromise5().then(function(json) {
+        console.log("promise5 성공함요"); // 성공하면안되는디 ㅠㅠ 이미 resolve가 확정이니 성공하지 ㅎㅎ..
+        var obj = JSON.parse(json);
+        console.log(obj);
+    }, function(error) {
+        console.log('Exception 에러 발생 했어요', error);
+    }).then(null, function() {
+        console.log("대신 다음거에서exception 콜백 에러를 잡아요");
+    });
+
+
+    function doBusinessAjax2(){
+        return "이것은 json 포멧이 아니다";
+    }
+</script>
+</body>
+</html>
