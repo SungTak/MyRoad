@@ -1,3 +1,4 @@
 .idea/workspace.xml
 target/test-classes/com/myroad/lombok/LombokUser.class
 target/test-classes/com/myroad/lombok/LombokUserTest.class
+target/*
