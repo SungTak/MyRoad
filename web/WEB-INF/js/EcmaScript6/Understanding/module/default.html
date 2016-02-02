@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<!-- https://leanpub.com/understandinges6/read -->
+<script type="module">
+    // export 기본값 함수가 됨
+    export default function(num1, num2) {
+        return num1 + num2;
+    }
+    export let color = "red";
+
+
+
+
+
+    // equivalent to previous example
+    function sum(num1, num2) {
+        return num1 + num2;
+    }
+
+    export { sum as default }; // 이 방법으로도 가능
+
+
+
+
+    // sum33은 없는데 어떻게 될까?
+    import sum33, { color } from "example";
+
+    console.log(sum33(1, 2));     // 3, 기본 함수인 sum이 적용된다.
+    console.log(color);         // "red"
+
+
+    // 위의 내용은 아래와 같다
+    // equivalent to previous example
+    import { default as sum33, color } from "example";
+
+    console.log(sum33(1, 2));     // 3
+    console.log(color);         // "red"
+
+
+
+
+
+
+    // re-exporting
+    import { sum } from "example";
+    export { sum }
+    // 위에껄 아래로 바꿀수있다
+    export { sum } from "example";
+    // 리네임도 가능하다 sum으로 import되서 add로 나간다.
+    export { sum as add } from "example";
+    // 바로 전체 읽고 나감
+    export * from "example";
+</script>
+</body>
+</html>
