@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script> <!-- 모듈 테스트 가능! -->
+<script type="module">
+    import {sum} from "module.js";
+
+    console.log("sum : ", sum(1, 2)); //3
+    // sum = 1; // 불가
+
+
+
+
+    // import multiple
+    import { name, magicNumber } from "module.js";  // 각각 import도 가능함
+    console.log("sum + magicNumber", sum(1, magicNumber));   // 8
+    console.log("name", name);        // 니콜라스
+
+
+
+
+
+
+    import { add } from "renameModule.js"; // 에드로 import!
+    console.log("add", add(3, 4)); //7
+
+
+
+
+    // import하고 리네임!
+    import { sub as resub } from "renameModule.js";
+    console.log(typeof sub);            // "undefined", sub는 사라짐
+    console.log(resub(1, 12));             // -11
+
+
+
+    // 데이터 수정
+    import { name as unit, setName as setUnit} from "renameModule.js"; // 중복 회피 ㅎㅎ
+
+    console.log(unit);       // "marine"
+    setUnit("firebat");
+    console.log(unit);       // "firebat", 모듈의 setter(함수)를 통해선 수정이 가능하다고하지만., 안되네;?
+
+    // unit = "Nicholas";       // error
+
+</script>
+</body>
+</html>

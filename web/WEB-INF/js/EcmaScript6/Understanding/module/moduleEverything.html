@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script> <!-- 모듈 테스트 가능! -->
+<script type="module">
+    // import everything
+    import * as example from "module.js";
+    console.log(example.sum(1, example.magicNumber));          // 8
+    console.log(example.name);    // 니콜라스
+    console.log(example.multiply(2, 5));    // 10
+</script>
+</body>
+</html>

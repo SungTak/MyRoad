@@ -11,19 +11,12 @@
 <!-- https://leanpub.com/understandinges6/read -->
 <script type="module">
     // sum33은 없는데 어떻게 될까?
-    import sum33, { color } from "defaultModule.js";
+    import * as re from "reexportingModule.js";
+    // import * from "reexportingModule.js"; // ERROR
 
-    console.log(sum33(1, 2));     // 3, 기본 함수인 sum이 적용된다.
-    console.log(color);         // "red"
+    console.log(re.sum(1, 4));     // 5, 기본 함수인 sum이 적용된다.
+    console.log(re.color);         // "red가 아닌 undefined" //export안함 ㅎㅎ
 
-/*
-    // 위의 내용은 아래와 같다
-    // equivalent to previous example
-    import { default as sum33, color } from "defaultModule.js";
-
-    console.log(sum33(1, 2));     // 3
-    console.log(color);         // "red"
-*/
 </script>
 </body>
 </html>

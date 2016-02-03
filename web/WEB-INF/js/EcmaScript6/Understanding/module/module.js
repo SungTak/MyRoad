@@ -5,7 +5,7 @@ export const magicNumber = 7;
 
 // export function
 export function sum(num1, num2) {
-    return num1 + num1;
+    return num1 + num2;
 }
 
 // export class
@@ -27,10 +27,12 @@ function multiply(num1, num2) {
 }
 
 // export later
-export multiply;
+// export multiply; //되어야하지만 안됨
+export {multiply}; // 이렇게하면 됨 ㅎㅎ
 
 (function() {
-    if (true) {
-        // export flag;    // syntax error
+    var flag = true;
+    if (flag) {
+         //export {flag};    // syntax error
     }
 })();
