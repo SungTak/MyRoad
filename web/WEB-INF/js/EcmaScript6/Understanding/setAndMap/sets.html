@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    // 5에서 문제였던 부분이 6에선 없다.
+    let set = new Set();
+    set.add(5);
+    set.add("5");
+    set.add(5);  // 중복
+
+    console.log(set.size);    // 2
+    console.dir(set);
+
+
+
+
+
+
+    let set2 = new Set(),
+        key1 = {},
+        key2 = {};
+
+    set2.add(key1);
+    set2.add(key2);
+
+    console.log(set2.size);    // 2
+    console.dir(set2);
+
+
+
+
+
+
+
+    let set3 = new Set([1, 2, 3, 4, 5, 5, 5, 5]);
+    console.log(set3.size);    // 5
+    console.dir(set3);    // 5
+
+
+
+
+
+    console.log("=== has, delete ===");
+    let set4 = new Set();
+    set4.add(5);
+    set4.add("5");
+
+    console.log(set4.has(5));    // true
+    console.log(set4.has(6));    // false
+
+    set4.delete(5);
+
+    console.log(set4.has(5));    // false
+    console.log(set4.has("5"));    // true
+    console.log(set4.size);      // 1
+
+    set4.clear();
+
+    console.log(set4.has("5"));  // false
+    console.log(set4.size);      // 0
+
+
+
+
+
+
+    //The value from the next position in the set, set에서 다음 인덱스 값
+    //The same value as the first argument, 첫번째 인자요소가 같은
+    //The set from which the value is read, set은 값을 읽는다
+    console.log("=== foreach ===");
+    let set5 = new Set([1, 2]);
+
+    // 세번재는 모르겠다.
+    set5.forEach(function(value, key, ownerSet) {
+        console.log(key + " " + value); // 1, 1 -> 2, 2
+        console.log(ownerSet === set5); // true
+        console.dir(ownerSet);
+    });
+
+
+
+
+
+
+    console.log("=== 리터럴 객체 내부에서 foreach ===");
+    let set6 = new Set([1, 2]),
+        processor = {
+            output(value) {
+                console.log(value);
+            },
+
+            process(dataSet) {
+                dataSet.forEach(function(value) {
+                    this.output(value);
+                }, this); // 2번째 인자가 this를 바인딩한다!, 없으면 set에 output함수가 없다는 에러
+            }
+        };
+
+    processor.process(set6);
+
+
+
+
+    console.log("=== arrow 응용 ===");
+    let set7 = new Set([1, 2]),
+        processor7 = {
+            output(value) {
+                console.log(value);
+            },
+            process(dataSet) {
+                // this.output() to processor.output()
+                dataSet.forEach((value) => this.output(value));
+            }
+        };
+
+    processor7.process(set7);
+
+
+
+
+
+
+    console.log("=== convert array ===");
+    let set8 = new Set([1, 2, 3, 3, 3, 4, 5]),
+        array = [...set8];
+
+    console.log(array);             // [1,2,3,4,5]
+
+
+
+
+
+
+
+    console.log("=== 중복 제거 배열 ===");
+    function eliminateDuplicates(items) {
+        return [...new Set(items)];
+    }
+
+    let numbers = [1, 2, 3, 3, 3, 4, 5],
+        noDuplicates = eliminateDuplicates(numbers);
+
+    console.log(noDuplicates);      // [1,2,3,4,5]
+
+
+
+
+
+    console.log("=== set 주의점 ===");
+    let set9 = new Set(),
+        key = { go : "Go" };
+
+    set9.add(key);
+    console.log(set9.size);      // 1
+
+    // eliminate original reference
+    key = null;
+
+    console.log(set9.size);      // 1
+    console.dir(set9);
+
+    // get the original reference back
+    key = [...set9][0];
+    console.log(key);
+    // 레퍼러가 없어지지 않기  때문에 메모리 릭을 조심해야한다!!
+</script>
+</body>
+</html>
