@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    let set = new WeakSet(),
+        key = {};
+
+    // add the object to the set
+    set.add(key);
+
+    console.log(set.has(key));      // true
+
+    set.delete(key);
+
+    console.log(set.has(key));      // false
+
+
+
+
+    let key1 = {},
+        key2 = {},
+        set2 = new WeakSet([key1, key2]);
+
+    console.log(set2.has(key1));     // true (?? false가 나옴)
+    console.log(set2.has(key2));     // true
+
+
+
+
+
+    console.log("=== weak set은~ ===");
+    let set3 = new WeakSet(),
+        key3 = {};
+
+    // add the object to the set
+    set3.add(key3);
+
+    console.log(set3.has(key3));      // true
+    console.log(set3.size);  // undefine; weakset은 size가 없는듯
+
+    // remove the last strong reference to key, also removes from weak set
+    key3 = null;
+
+    console.log(set3.has(key3)); // false
+
+
+
+
+
+
+
+
+
+
+    //The add(), has(), and delete() methods throw an error when passed a non-object.
+    //Weak sets are not iterables and therefore cannot be used in a for-of loop.
+    //Weak sets do not expose any iterators (such as keys() and values()), so there is no way to programmatically determine the contents of a weak set.
+    //Weak sets do not have a forEach() method.
+    let oriSet = new Set();
+    oriSet.add(3);
+    console.dir(oriSet);
+
+    for ( let i of oriSet ) {
+        console.log("of", i);
+    }
+    console.log(oriSet.keys());
+    console.log(oriSet.values());
+
+
+    let set4 = new WeakSet();
+    // set4.add(3); // 객체가 아닌건 에러를 뱉는다,
+    console.dir(set4);
+
+//    for ( let i of set4 ) {
+//        console.log("error", i);
+//    }
+
+   // console.log(set4.keys());
+//    console.log(set4.values());
+
+
+//    set4.foreach(function(value) {
+//        console.log(value);
+//    });
+
+</script>
+</body>
+</html>

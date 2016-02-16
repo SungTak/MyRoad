@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    // Ecma Scirpt 5 Set
+    // null을 이용해 생성하면 기존 Object 프로퍼티 내용들은 상속하지 않는다.
+    var set = Object.create(null);
+
+    set.foo = true;
+
+    // checking for existence
+    if (set.foo) {
+
+        // do something
+    }
+
+
+
+
+
+    // Ecma Scirpt 5 Map
+    var map = Object.create(null);
+
+    map.foo = "bar";
+
+    // retrieving a value
+    var value = map.foo;
+
+    console.log(value);
+
+
+
+
+
+
+
+    // 기존 방식의 문제점, 모든 객체의 프로퍼티는 String이됨
+    // 5라는 숫자로 값을 저장하더라도 "5"로 조회가 가능함
+    var map2 = Object.create(null);
+
+    map2[5] = "foo";
+
+    console.log(map2["5"]);      // "foo"
+
+
+
+
+    // 분명 key1과 key2는 다른 객체지만 키의 참조는 같다.
+    var map3 = Object.create(null),
+            key1 = {},
+            key2 = {};
+
+    map3[key1] = "foo오비지";
+
+    console.log(map3[key2]); // foo오비지
+
+
+
+
+    // 1인경우엔 true로 인식해서 괜찮지남 0인경우엔 데이터가 있음에도 빈 값과 동일하게 인식한다!
+    var map4 = Object.create(null);
+
+    //map4.count = 1;
+    //map4.count = "0";
+    map4.count = 0;
+
+
+    // checking for the existence of "count" or a nonzero value?
+    if (map4.count) {
+        console.log("1은 존재한다.")
+    } else {
+        console.log("0은 존재안한다")
+    }
+</script>
+
+</body>
+</html>

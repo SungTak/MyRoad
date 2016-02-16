@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script> <!-- 모듈 테스트 가능! -->
+<!-- https://leanpub.com/understandinges6/read -->
+<script type="module">
+    // sum33은 없는데 어떻게 될까?
+    import sum33, { color } from "defaultModule.js";
+
+    console.log(sum33(1, 2));     // 3, 기본 함수인 sum이 적용된다.
+    console.log(color);         // "red"
+
+/*
+    // 위의 내용은 아래와 같다
+    // equivalent to previous example
+    import { default as sum33, color } from "defaultModule.js";
+
+    console.log(sum33(1, 2));     // 3
+    console.log(color);         // "red"
+*/
+</script>
+</body>
+</html>

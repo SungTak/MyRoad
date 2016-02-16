@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="element"></div>
+<div class="test"></div>
+<div class="map"></div>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module">
+    let map = new WeakMap(),
+        element = document.querySelector(".element");
+
+    console.log("=== weak Map은?===");
+    map.set(element, "Original");
+
+    let value = map.get(element);
+    console.log(value);             // "Original"
+
+    // remove the element
+    element.parentNode.removeChild(element);
+    element = null;
+
+    console.log(map.get(element));
+
+
+
+
+
+
+
+
+    console.log("=== map은? ===");
+    let oriMap = new Map();
+    let testElement = document.querySelector(".test");
+    oriMap.set(testElement, "Map!!");
+    console.log(oriMap.get(testElement));
+
+    testElement.parentNode.removeChild(testElement);
+    testElement = null;
+
+    console.log(oriMap.get(testElement)); //?? 둘다됨;
+
+
+
+
+
+
+
+
+    console.log("=== weak init ===");
+    let key1 = {},
+        key2 = {},
+        map2 = new WeakMap([ [key1, "Hello"], [key2, 42]]);
+
+    console.log(map2.has(key1));     // true
+    console.log(map2.get(key1));     // "Hello"
+    console.log(map2.has(key2));     // true
+    console.log(map2.get(key2));     // 42
+
+
+
+
+
+
+
+    console.log("=== methods ===");
+    let map3 = new WeakMap(),
+        element3 = document.querySelector(".map");
+
+    map3.set(element3, "Original");
+
+    console.log(map3.has(element3));   // true
+    console.log(map3.get(element3));   // "Original"
+
+    map3.delete(element3);
+    console.log(map3.has(element3));   // false
+    console.log(map3.get(element3));   // undefined
+</script>
+</body>
+</html>

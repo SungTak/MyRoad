@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+<script type="module" src="module.js">
+// chrome.exe --allow-file-access-from-files
+
+    import {sum} from "module";
+
+    console.log(sum(1, 2)); //3
+    // sum = 1;        // error
+
+
+
+    // import multiple
+    import { sum, multiply, magicNumber } from "example";
+    console.log(sum(1, magicNumber));   // 8
+    console.log(multiply(1, 2));        // 2
+
+
+
+
+    // import everything
+    import * as example from "example";
+    console.log(example.sum(1,
+            example.magicNumber));          // 8
+    console.log(example.multiply(1, 2));    // 2
+
+
+
+    // 이렇게 각각 import도 가능하다. 같은 모듈 인스턴스
+    import { sum } from "example";
+    import { multiply } from "example";
+    import { magicNumber } from "example";
+
+
+
+
+
+
+
+
+    //////////// 리네임 /////////////////
+
+    function sum(num1, num2) {
+        return num1 + num2;
+    }
+
+    export { sum as add };
+
+    import { add } from "example"; // 에드로 import!
+
+
+    // import하고 리네임!
+    import { add as sum } from "example";
+    console.log(typeof add);            // "undefined", add는 사라지는듯!
+    console.log(sum(1, 2));             // 3
+
+
+
+
+
+
+
+
+
+    // export의 변수 및 함수는 직접적으로 바꿀수 없지만~
+    export var name = "Nicholas";
+    export function setName(newName) {
+        name = newName;
+    }
+
+
+
+    import { name, setName } from "example";
+
+    console.log(name);       // "Nicholas"
+    setName("Greg");
+    console.log(name);       // "Greg", 모듈의 setter(함수)를 통해선 수정이 가능하다
+
+    // name = "Nicholas";       // error
+
+</script>
+</body>
+</html>
