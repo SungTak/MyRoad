@@ -47,12 +47,15 @@
 
 
     console.log("=== has, delete ===");
-    let set4 = new Set();
+    let set4 = new Set("안녕하세요!!");
     set4.add(5);
     set4.add("5");
+    //set4.add("안녕하세요!!");
+    console.log(...set4);
 
     console.log(set4.has(5));    // true
     console.log(set4.has(6));    // false
+    console.log(set4.has("!"));    // true
 
     set4.delete(5);
 
