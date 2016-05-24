@@ -1,0 +1,115 @@
+html {
+  body {
+    color: black;
+    div {
+      color: red;
+    }
+  }
+}
+
+.card {
+  color: #000000;
+  &_inner {
+    color: red;
+    &_inner {
+      color: blue;
+    }
+  }
+
+  .gogo {
+    color: palegoldenrod;
+  }
+
+  .card_wrap & {
+    color: beige;
+  }
+}
+
+$global-color : red;
+$global-size : 300px;
+.box {
+  width: $global-size * 2;
+  color: $global-color;
+  border: 1px solid $global-color;
+}
+
+$namespace : card;
+.#{$namespace} {
+  color: red;
+}
+
+.sidebar {
+  width : 300px;
+  @media screen and (max-width: 300px) {
+    width: 100px;
+  }
+}
+
+.a {
+  color: red;
+}
+
+%c {
+  font-size: 16px;
+  background: blue;
+
+  &_o {
+    border: 1px;
+  }
+}
+
+.b {
+  @extend .a;
+  font-size: 14px;
+}
+
+.d {
+  @extend %c;
+  background: red;
+}
+
+$type : monster;
+p {
+  @if $type == monster {
+    color:pink;
+  }
+  @else if $type == ocean {
+    color: deepskyblue;
+  }
+  @else {
+    color: dimgray;
+  }
+}
+
+@for $i from 1 through 3 {
+  .item-#{$i} {
+    width: 100px * $i;
+  }
+}
+
+$j : 6;
+@while $j > 0 {
+  .item-#{$j} {
+    width: 100px / $j;
+  }
+
+  $j : $j - 2;
+}
+
+@each $name, $age in (thomas, 12), (alice, 10) {
+  .#{$name} {
+    font-size: $age + px;
+  }
+}
+
+@mixin global-width($width) {
+  width : $width;
+}
+
+html {
+  @include global-width(100px);
+}
+
+body {
+  @include global-width(200px);
+}
