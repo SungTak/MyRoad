@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+    function createElement() {
+        var li = document.createElement("li");
+        li.setAttribute("class", "sample01");
+
+        var span = document.createElement("span");
+        span.setAttribute("class", "span_class01" + "done");
+
+        var innerSpan = document.createElement("span");
+        innerSpan.setAttribute("class", "blind");
+
+        var message = document.createTextNode("message");
+
+        innerSpan.appendChild(message);
+
+        span.appendChild(innerSpan);
+
+        li.appendChild(span);
+
+        document.body.appendChild(li);
+    }
+
+    createElement();
+</script>
+</body>
+</html>

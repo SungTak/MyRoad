@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>성탁 갤러리</title>
+
+    <link rel="stylesheet" type="text/css" href="css/gallary.css" />
+</head>
+<body>
+<section>
+    <div>
+        <label for="imageWidth">이미지 넓이</label>
+        <input id="imageWidth" type="number" min="50" max="500" step="50"/>
+    </div>
+    <div class="gallary_container">
+        <ul class="gallary_lst">
+        </ul>
+    </div>
+</section>
+
+<script type="text/javascript" src="../../jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="js/gallary.js"></script>
+<script type="text/javascript" src="js/gallaryEventHandler.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        var options = {
+            images : [
+                "disney/image01.jpeg",
+                "disney/image02.jpeg",
+                "disney/image03.jpeg",
+                "disney/image04.jpeg",
+                "disney/image05.jpeg",
+                "disney/image06.jpeg",
+                "disney/image07.jpeg",
+                "disney/image08.jpeg",
+                "disney/image09.jpeg",
+                "disney/image10.jpeg",
+                "disney/image11.jpeg",
+                "disney/image12.jpeg",
+                "disney/image13.jpeg",
+                "disney/image14.jpeg",
+                "disney/image15.jpeg",
+                "disney/image16.jpeg",
+                "disney/image17.jpeg",
+                "disney/image18.jpeg",
+                "disney/image19.jpeg",
+                "disney/image20.jpeg",
+                "disney/image21.jpeg",
+                "disney/image22.jpeg",
+                "disney/image23.jpeg",
+                "disney/image24.jpeg",
+                "disney/image25.jpeg",
+                "disney/image26.jpeg",
+                "disney/image27.jpeg",
+                "disney/image28.jpeg",
+                "disney/image29.jpeg",
+                "disney/image30.jpeg"
+            ],
+            selector : jQuery(".gallary_lst")
+        };
+
+        var gallary = new nts.Gallary();
+        gallary.init(options);
+
+        var gallaryEventHandler = new nts.GallaryEventHandler();
+        gallaryEventHandler.change({
+            welImageController : jQuery("#imageWidth"),
+            gallarySelector : gallary.getSelector()
+        });
+    });
+</script>
+</body>
+</html>

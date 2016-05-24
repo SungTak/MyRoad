@@ -1,0 +1,12 @@
+.gallary_lst {
+    list-style: none;
+}
+.gallary_lst li {
+    border-style: solid;
+    border-color: #5E740B;
+    width: 280px;
+    float: left;
+}
+.gallary_lst img {
+    width: 100%;
+}

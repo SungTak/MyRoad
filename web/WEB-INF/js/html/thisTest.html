@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var childWindow = {
+        foo : "foo child",
+        opener : {
+            foo : "foo opener",
+            close : function() {
+                console.log(this.foo);
+            }
+        }
+
+    };
+
+
+
+    childWindow.opener.close();
+
+    childWindow.ref = childWindow.opener.close;
+    childWindow.ref();
+</script>
+
+</body>
+</html>
