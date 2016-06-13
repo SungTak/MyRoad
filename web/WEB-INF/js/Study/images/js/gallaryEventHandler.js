@@ -5,13 +5,20 @@ var nts = nts || {};
 
 nts.GallaryEventHandler = (function() {
 
-    function GallaryEventHandler() {
-        this.options = {};
+    function GallaryEventHandler(options) {
+        this.options = options;
 
-        this.change = function(options) {
-            this.options = options;
-            var $imageController = options.welImageController;
+        this.change = function() {
+            var $imageController = this.options.welImageController;
             $imageController.on('change', changeWidth.bind(this));
+        };
+
+        this.each = function(fCallback) {
+            var $imageContorller = this.options.gallarySelector;
+            var elAImages = $imageContorller.find('a');
+            jQuery.each(elAImages, function( index, item) {
+                $(item).on("click", fCallback);
+            });
         };
 
         function changeWidth(event) {
@@ -23,6 +30,12 @@ nts.GallaryEventHandler = (function() {
             jQuery.each(elImageItems, function( index, item ) {
                 $(item).css('width', width);
             });
+
+        }
+
+        function eachClick(event) {
+            event.preventDefault();
+
 
         }
     }
