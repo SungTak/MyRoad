@@ -22,8 +22,12 @@ nts.Gallary = (function() {
         };
 
         this.bucketInit = function() {
-            for (var i = 0; i < 800; i = i + 200) {
-                buckets.push(new nts.GallaryBucket(200, 800));
+            var bucketWidth = 200;
+            var bucketHeight = 800;
+            var gallaryWidth = 1000;
+
+            for (var i = 0; i < gallaryWidth; i = i + bucketWidth) {
+                buckets.push(new nts.GallaryBucket(bucketWidth, bucketHeight));
             }
 
             var lis = this.options.selector.children("li");
@@ -60,7 +64,7 @@ nts.Gallary = (function() {
 
                 var liElement = jQuery("<li>");
                 liElement.html(aElement);
-                liElement.width(200); //default width
+                liElement.width(200); //default init width
 
                 imageList.append(liElement);
             }
@@ -69,6 +73,7 @@ nts.Gallary = (function() {
         function addBucket(buckets, element) {
             for (var i = 0; i < buckets.length; i++) {
                 var isSave = buckets[i].add(element);
+                // 담을 수 있으면 해당 버킷에 담고 바로 끝
                 if (isSave) {
                     break;
                 }
@@ -80,9 +85,13 @@ nts.Gallary = (function() {
             selector.empty();
 
             for (var i = 0; i < buckets.length; i++) {
+                var divBucket = jQuery("<div>");
+                divBucket.css("position", "relative");
+                divBucket.css("float", "left");
                 var list = buckets[i].getList();
+                selector.append(divBucket);
                 for (var j = 0; j < list.length; j++) {
-                    selector.append(list[j]);
+                    divBucket.append(list[j]);
                 }
             }
         }
