@@ -29,6 +29,8 @@ public class MergeSort {
 			mergeIndex++;
 		}
 		
+		
+		// 나머지 데이터 다 넣기
 		while (i < mid) {
 			mergeNums[mergeIndex] = nums[i];
 			i++;
@@ -41,6 +43,7 @@ public class MergeSort {
 			mergeIndex++;
 		}
 		
+		// 변경된 점만 뽑아서 원본 배열에 적용
 		for (int k = low; k < high; k++) {
 			nums[k] = mergeNums[k];
 		}
