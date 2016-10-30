@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- React -->
+    <script src="../React_v15.2.1.js"></script>
+    <script src="../ReactDom_v15.2.1.js"></script>
+    <!-- ECMA6 -->
+    <script src="../babel_6.10.3.js"></script>
+</head>
+<body>
+    <!-- https://velopert.com/775 -->
+    <div id="content"></div>
+    <script type="text/babel">
+        // 1. HelloWorld 클래스 생성
+        class HelloWorld extends React.Component {
+            propTypes : {
+                // 타입 지정
+                name : React.PropTypes.string
+            }
+
+            render() {
+                // 외부에서 프로퍼티 주입
+                return <h1>Hello {this.props.name}</h1>
+            }
+        }
+
+        // 2. 디폴트 값 지정, 프로퍼티 없으면 나옴
+        HelloWorld.defaultProps = {
+            name : "Good ~"
+        }
+
+        //ReactDOM.render(<HelloWorld />, document.getElementById('content'));
+        // 3. HelloWorld 프로퍼티에 데이터 세팅 -> #content에 랜더링
+        ReactDOM.render(<HelloWorld name="WWWWrold" />, document.getElementById('content'));
+
+    </script>
+</body>
+</html>
